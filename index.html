@@ -25,6 +25,12 @@
   .form-group+.form-group{border-top:1px solid #edf1f7;padding-top:19px;margin-top:20px}
   .group-title{display:flex;align-items:center;gap:9px;font-weight:800;font-size:12px;color:#3e5470;letter-spacing:.025em;margin-bottom:13px}
   .bubble{background:#eaf2fc;color:#1162a8;border-radius:8px;width:23px;height:23px;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+  .collapsible-group > summary.group-title{cursor:pointer;list-style:none;margin-bottom:0}
+  .collapsible-group > summary.group-title::-webkit-details-marker{display:none}
+  .collapsible-group > summary.group-title::after{content:"";width:8px;height:8px;border-right:2px solid #38618c;border-bottom:2px solid #38618c;transform:rotate(45deg);margin-left:auto;margin-right:5px;transition:transform .15s}
+  .collapsible-group[open] > summary.group-title{margin-bottom:13px}
+  .collapsible-group[open] > summary.group-title::after{transform:rotate(225deg)}
+  .collapsible-group > summary.group-title:focus-visible{outline:2px solid #1d70bb;outline-offset:5px;border-radius:4px}
   .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 14px}
   .field{display:flex;flex-direction:column;gap:6px;min-width:0}
   .field.full{grid-column:1/-1}
@@ -115,13 +121,13 @@
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <div class="group-title"><span class="bubble">03</span> Incidencias y descuentos</div>
+        <details class="form-group collapsible-group">
+          <summary class="group-title"><span class="bubble">03</span> Incidencias y descuentos</summary>
           <div class="fields">
             <div class="field"><label for="inc">Número de incidencias</label><input id="inc" type="number" min="0" step="1" value="0" inputmode="numeric"><span class="help">1: sin bono · 2: −10% · 3: −20% · 4+: −30%</span></div>
             <div class="field"><label for="recover">Folios ya pagados a descontar ($)</label><input id="recover" type="number" min="0" step="0.01" value="0" inputmode="decimal"><span class="help">Se descuenta al final; permite saldo negativo</span></div>
           </div>
-        </div>
+        </details>
         <p class="note"><strong>Importante:</strong> captura solamente ventas y complementos que sí son comisionables. Excluye los folios con incidencia, cancelados, incompletos o rechazados antes de ingresar las cantidades. El campo «incidencias» controla el bono y los descuentos adicionales; no descuenta folios automáticamente.</p>
       </div>
     </section>
