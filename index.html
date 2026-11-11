@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#003b7a">
+<title>Calculadora de Comisiones · WM / Sam's</title>
+<style>
+  :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#172a43;background:#f3f6fb;font-synthesis:none}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh}
+  button,input{font:inherit}
+  .shell{max-width:1090px;margin:auto;padding:32px 22px 48px}
+  .header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:25px}
+  .eyebrow{text-transform:uppercase;letter-spacing:.16em;color:#1768ad;font-weight:800;font-size:11px;margin:0 0 8px}
+  h1{font-size:clamp(26px,3.7vw,36px);line-height:1.14;letter-spacing:-.045em;margin:0;color:#092f5e}
+  .subtitle{font-size:13px;color:#66748a;max-width:740px;line-height:1.55;margin:9px 0 0}
+  .brand{background:#0b4383;color:white;font-size:11px;letter-spacing:.075em;font-weight:900;padding:10px 12px;border-radius:12px;white-space:nowrap;margin-top:3px}
+  .workspace{display:grid;grid-template-columns:minmax(0,1.07fr) minmax(320px,.93fr);gap:18px;align-items:start}
+  .card{background:white;border:1px solid #dae4f0;border-radius:19px;box-shadow:0 6px 20px rgba(24,48,85,.035)}
+  .card-head{padding:20px 22px 15px;border-bottom:1px solid #edf1f7}
+  h2{margin:0;font-size:17px;letter-spacing:-.025em;color:#142d50}
+  .muted{font-size:12px;color:#738198;line-height:1.45;margin:6px 0 0}
+  .card-body{padding:21px 22px}
+  .form-group+.form-group{border-top:1px solid #edf1f7;padding-top:19px;margin-top:20px}
+  .group-title{display:flex;align-items:center;gap:9px;font-weight:800;font-size:12px;color:#3e5470;letter-spacing:.025em;margin-bottom:13px}
+  .bubble{background:#eaf2fc;color:#1162a8;border-radius:8px;width:23px;height:23px;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+  .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 14px}
+  .field{display:flex;flex-direction:column;gap:6px;min-width:0}
+  .field.full{grid-column:1/-1}
+  label{font-size:12px;font-weight:700;color:#374e6a}
+  input[type=number]{border:1px solid #cdd9e9;border-radius:10px;width:100%;height:43px;padding:0 12px;background:#fff;color:#122c4d;font-size:17px;font-weight:760;font-variant-numeric:tabular-nums;outline:0;transition:border-color .15s,box-shadow .15s}
+  input[type=number]:focus{border-color:#1d70bb;box-shadow:0 0 0 3px rgba(29,112,187,.12)}
+  input[type=number]:disabled{background:#f1f5fa;color:#65778c}
+  .help{font-size:11px;color:#7b8797;line-height:1.4}
+  .checkrow{display:flex;gap:8px;align-items:center;margin:1px 0 9px;color:#405570;font-size:12px;font-weight:700;cursor:pointer}
+  input[type=checkbox]{accent-color:#135caa;width:16px;height:16px;cursor:pointer}
+  .note{background:#f2f7fd;border:1px solid #e0eaf7;padding:11px 13px;border-radius:11px;font-size:11.5px;line-height:1.55;color:#516782;margin-top:18px}
+  .results .card-body{padding:21px 23px 23px}
+  .total-label{text-transform:uppercase;color:#5f7490;letter-spacing:.08em;font-weight:850;font-size:11px}
+  .money{font-size:clamp(30px,4vw,43px);font-weight:850;letter-spacing:-.055em;color:#093e78;line-height:1.18;margin-top:7px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+  .money.negative{color:#b13d38}
+  .badges{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:12px}
+  .pill{display:inline-flex;padding:6px 9px;border-radius:100px;background:#edf4fd;color:#17568f;font-weight:800;font-size:11px}
+  .pill.good{background:#e7f5ee;color:#1c7652}
+  .pill.warn{background:#fff0e1;color:#a05817}
+  .pill.no{background:#f1f3f6;color:#65758b}
+  .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-block:1px solid #e8edf4;margin:21px 0 17px;padding:15px 0;gap:10px}
+  .stat-label{font-size:10.5px;color:#667990;line-height:1.3}
+  .stat-value{font-size:21px;color:#1b3c63;font-weight:820;letter-spacing:-.035em;font-variant-numeric:tabular-nums;margin-top:5px}
+  .subheading{font-weight:800;color:#244666;font-size:12px;margin:0 0 8px}
+  .details-table{width:100%;border-collapse:collapse;font-size:12px;table-layout:fixed}
+  .details-table th{font-size:10px;text-transform:uppercase;letter-spacing:.03em;color:#8090a6;font-weight:750;text-align:right;padding:9px 5px;border-bottom:1px solid #e7edf5}
+  .details-table th:first-child{text-align:left}
+  .details-table td{padding:9px 5px;text-align:right;border-bottom:1px solid #edf1f6;color:#47617d;font-variant-numeric:tabular-nums}
+  .details-table td:first-child{text-align:left;color:#294563;font-weight:630}
+  .details-table td:last-child{font-weight:820;color:#173e68}
+  .details-table tr.sum td{background:#f0f6fc;font-weight:820;color:#0c4c8d;border-bottom:0}
+  .details-table tr.minus td:last-child{color:#b45539}
+  .details-table tr:last-child td{border-bottom:0}
+  .alert{margin-top:14px;color:#9d4d28;background:#fff5e9;border:1px solid #f5d8b9;padding:11px 13px;border-radius:11px;font-size:11.5px;line-height:1.55}
+  .alert[hidden]{display:none}
+  .tariff{margin-top:18px;overflow:hidden}
+  .tariff-header{padding:19px 22px 14px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+  .tier-status{color:#2c5d92;font-size:12px;font-weight:800}
+  .table-wrap{overflow-x:auto;padding:0 14px 17px;scrollbar-width:thin}
+  .rates{border-collapse:separate;border-spacing:0;width:100%;min-width:570px;font-size:12px;text-align:center}
+  .rates th,.rates td{padding:12px 10px;border-bottom:1px solid #e9eff6}
+  .rates th{background:#f2f5fa;color:#4b627f;font-size:11px;line-height:1.45}
+  .rates th:first-child,.rates td:first-child{text-align:left;min-width:168px;font-weight:760;color:#35516f}
+  .rates td:not(:first-child){font-variant-numeric:tabular-nums;font-weight:720;color:#2e527c}
+  .rates .hit{background:#e5f2ff;color:#064f93!important;box-shadow:inset 1px 0 #83b8e9,inset -1px 0 #83b8e9}
+  .rates thead .hit{background:#095ba8;color:white!important;box-shadow:none}
+  .rates tbody tr:last-child td{border-bottom:0}
+  .rates .sumline td{border-top:2px solid #d8e3ef;background:#f8fbfe;font-weight:850}
+  .rates .sumline .hit{background:#d6eafc}
+  .tag-current{display:block;font-size:9px;font-weight:850;letter-spacing:.01em;margin-top:4px;color:#c8e8ff}
+  .footer-note{margin:0 22px 20px;color:#7d8797;font-size:11px;line-height:1.55}
+  @media(max-width:830px){.workspace{grid-template-columns:1fr}.header{align-items:center}.shell{padding:22px 14px 36px}.brand{display:none}}
+  @media(max-width:420px){.card-head,.card-body,.results .card-body{padding-left:16px;padding-right:16px}.fields{gap:12px}.stats{gap:6px}.stat-value{font-size:19px}.table-wrap{padding:0 6px 12px}.footer-note{margin:0 15px 18px}}
+
+  .scenario-label{display:flex;align-items:center;gap:13px;margin:26px 0 13px;flex-wrap:wrap}
+  .scenario-label>span{display:grid;place-items:center;width:40px;height:40px;background:#0b4383;color:#fff;border-radius:12px;font-weight:850}
+  .scenario-label h2{font-size:20px}.scenario-label p{margin:3px 0 0;color:#6d7d91;font-size:12px}
+  button{cursor:pointer}.secondary{margin-left:auto;background:white;color:#0b4383;border:1px solid #a8c3df;border-radius:10px;padding:10px 14px;font-size:12px;font-weight:750}
+  .comparison{margin-top:25px}.compare-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:20px}
+  .compare-grid>div{background:#f3f7fc;border-radius:13px;padding:16px;min-width:0}.compare-grid span{display:block;font-size:12px;color:#687a91}.compare-grid strong{display:block;margin-top:7px;font-size:clamp(18px,2.5vw,27px);color:#103f76;overflow-wrap:anywhere}.compare-grid small{display:block;font-size:13px;font-weight:800;margin-top:5px}.positive{color:#14734e!important}.negative-delta{color:#b43d37!important}.compare-details{padding:0 20px 20px;font-size:12px;color:#526780;line-height:1.6}
+  .export-controls{display:flex;align-items:center;gap:15px;margin:20px 0 25px;flex-wrap:wrap}.export-controls button{background:#07549a;color:white;border:0;border-radius:12px;padding:15px 20px;font-size:14px;font-weight:850}.export-controls span{font-size:12px;color:#63758d}
+  .export-report{position:absolute;left:-100000px;top:0;width:1280px;padding:52px;background:#fff;color:#163351;font-family:Inter,Arial,sans-serif}.report-heading{text-align:center;border-bottom:3px solid #0a4d8e;padding-bottom:24px;margin-bottom:26px}.report-heading h2{font-size:31px;color:#073e76;letter-spacing:.02em}.report-heading>p:last-child{font-size:15px;line-height:1.5;color:#52647c;max-width:1000px;margin:12px auto 0}.report-columns{display:grid;grid-template-columns:1fr 1fr;gap:24px}.report-panel{border:1px solid #d5e2f0;border-radius:14px;overflow:hidden}.report-panel h3{background:#0a4d8e;color:white;font-size:19px;padding:15px 20px;margin:0}.report-panel>div{padding:18px}.report-panel table,.report-difference table{width:100%;border-collapse:collapse;font-size:15px}.report-panel td,.report-difference td{padding:10px 7px;border-bottom:1px solid #e8edf3}.report-panel td:last-child,.report-difference td:not(:first-child){text-align:right;font-weight:750}.report-panel tr.emphasis td{font-size:20px;font-weight:850;background:#e9f3fc;color:#063e76}.report-difference{margin-top:25px;border:1px solid #d5e2f0;border-radius:14px;padding:20px}.report-difference h3{margin:0 0 12px;font-size:19px;color:#0a4d8e}.report-footer{border-top:1px solid #d5e2f0;margin-top:28px;padding-top:16px;font-size:13px;line-height:1.55;color:#617189}
+  @media(max-width:600px){.compare-grid{grid-template-columns:1fr}.scenario-label .secondary{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="header">
+    <div>
+      <p class="eyebrow">WM / Sam's Club · Ejecutivos</p>
+      <h1>Calculadora de comisiones manual</h1>
+      <p class="subtitle">Solo representa una simulación sobre el esquema de comisiones de septiembre 2026 y pudiera haber variaciones sobre el monto total a pagar.</p>
+    </div>
+    <span class="brand">INVEX · SIMULADOR</span>
+  </header>
+
+  <div class="scenario-label"><span>01</span><div><h2>Escenario base</h2><p>Resultados originales para establecer el punto de comparación.</p></div></div>
+  <div class="workspace scenario-workspace">
+    <section class="card" aria-labelledby="base_input-title">
+      <div class="card-head"><h2 id="base_input-title">Captura del escenario base</h2><p class="muted">Captura las cantidades válidas de la semana. El cálculo se actualizará automáticamente.</p></div>
+      <div class="card-body">
+        <div class="form-group">
+          <div class="group-title"><span class="bubble">01</span> Meta y ventas comisionables</div>
+          <div class="fields">
+            <div class="field full"><label for="base_goal">Objetivo semanal de ventas</label><input id="base_goal" type="number" min="1" step="1" value="10" inputmode="numeric"></div>
+            <div class="field"><label for="base_regular">Ventas regulares</label><input id="base_regular" type="number" min="0" step="1" value="0" inputmode="numeric"></div>
+            <div class="field"><label for="base_guaranteed">Ventas garantizadas</label><input id="base_guaranteed" type="number" min="0" step="1" value="0" inputmode="numeric"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="group-title"><span class="bubble">02</span> Complementos de las ventas</div>
+          <div class="fields">
+            <div class="field"><label for="base_dental">Planes dentales</label><input id="base_dental" type="number" min="0" step="1" value="0" inputmode="numeric"></div>
+            <div class="field"><label for="base_p0">Programas Cero</label><input id="base_p0" type="number" min="0" step="1" value="0" inputmode="numeric"><span class="help">Mínimo 30% de ventas regulares</span></div>
+            <div class="field full">
+              <label for="base_app">Activaciones APP</label>
+              <label class="checkrow"><input id="base_autoApp" type="checkbox" checked> Contar una APP por cada venta válida</label>
+              <input id="base_app" type="number" min="0" step="1" value="0" inputmode="numeric" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="group-title"><span class="bubble">03</span> Incidencias y descuentos</div>
+          <div class="fields">
+            <div class="field"><label for="base_inc">Número de incidencias</label><input id="base_inc" type="number" min="0" step="1" value="0" inputmode="numeric"><span class="help">1: sin bono · 2: −10% · 3: −20% · 4+: −30%</span></div>
+            <div class="field"><label for="base_recover">Folios ya pagados a descontar ($)</label><input id="base_recover" type="number" min="0" step="0.01" value="0" inputmode="decimal"><span class="help">Se descuenta al final; permite saldo negativo</span></div>
+          </div>
+        </div>
+        <p class="note"><strong>Importante:</strong> captura solamente ventas y complementos que sí son comisionables. Excluye los folios con incidencia, cancelados, incompletos o rechazados antes de ingresar las cantidades. El campo «incidencias» controla el bono y los descuentos adicionales; no descuenta folios automáticamente.</p>
+      </div>
+    </section>
+
+    <section class="card results" aria-labelledby="base_results-title" aria-live="polite">
+      <div class="card-head"><h2 id="base_results-title">Resultado · escenario base</h2><p class="muted">Monto calculado con el factor de cumplimiento alcanzado.</p></div>
+      <div class="card-body">
+        <div class="total-label">Comisión final estimada</div>
+        <div class="money" id="base_net">$0.00</div>
+        <div class="badges"><span class="pill no" id="base_factor">Sin escalón</span><span class="pill" id="base_penaltyPill">Sin penalizaciones</span></div>
+        <div class="stats">
+          <div><div class="stat-label">Ventas válidas</div><div class="stat-value" id="base_sales">0</div></div>
+          <div><div class="stat-label">Cumplimiento</div><div class="stat-value" id="base_compliance">0%</div></div>
+          <div><div class="stat-label">Programa Cero</div><div class="stat-value" id="base_p0rate">Exento</div></div>
+        </div>
+        <p class="subheading">Desglose de la comisión</p>
+        <table class="details-table" aria-label="Detalle del cálculo">
+          <thead><tr><th style="width:43%">Concepto</th><th>Cant.</th><th>Tarifa</th><th>Subtotal</th></tr></thead>
+          <tbody>
+            <tr><td>Ventas</td><td id="base_qSales">0</td><td id="base_rSale">$0</td><td id="base_cSale">$0.00</td></tr>
+            <tr><td>Plan Dental</td><td id="base_qDental">0</td><td id="base_rDental">$0</td><td id="base_cDental">$0.00</td></tr>
+            <tr><td>Activación APP</td><td id="base_qApp">0</td><td id="base_rApp">$0</td><td id="base_cApp">$0.00</td></tr>
+            <tr><td>Programa Cero</td><td id="base_qP0">0</td><td id="base_rP0">$0</td><td id="base_cP0">$0.00</td></tr>
+            <tr class="sum"><td colspan="3">Comisiones por conceptos</td><td id="base_gross">$0.00</td></tr>
+            <tr><td colspan="3">Bono por calidad</td><td id="base_bonus">$0.00</td></tr>
+            <tr class="minus"><td colspan="3">Penalización Programa Cero <span id="base_p0DiscountLabel"></span></td><td id="base_p0Discount">−$0.00</td></tr>
+            <tr class="minus"><td colspan="3">Penalización incidencias <span id="base_incDiscountLabel"></span></td><td id="base_incDiscount">−$0.00</td></tr>
+            <tr class="minus"><td colspan="3">Descuentos de folios anteriores</td><td id="base_priorDiscount">−$0.00</td></tr>
+          </tbody>
+        </table>
+        <div class="alert" id="base_error" role="alert" hidden></div>
+        <p class="muted" id="base_next" style="margin-top:16px">Ingresa tus ventas para conocer el siguiente escalón.</p>
+      </div>
+    </section>
+  </div>
+
+  <div class="scenario-label"><span>02</span><div><h2>Simulación</h2><p>Modifica las cantidades para calcular un resultado alternativo.</p></div><button class="secondary" id="copyBase" type="button">Copiar valores del escenario base</button></div>
+  <div class="workspace scenario-workspace">
+    <section class="card" aria-labelledby="sim_input-title">
+      <div class="card-head"><h2 id="sim_input-title">Captura de la simulación</h2><p class="muted">Captura las cantidades válidas de la semana. El cálculo se actualizará automáticamente.</p></div>
+      <div class="card-body">
+        <div class="form-group">
+          <div class="group-title"><span class="bubble">01</span> Meta y ventas comisionables</div>
+          <div class="fields">
+            <div class="field full"><label for="sim_goal">Objetivo semanal de ventas</label><input id="sim_goal" type="number" min="1" step="1" value="10" inputmode="numeric"></div>
+            <div class="field"><label for="sim_regular">Ventas regulares</label><input id="sim_regular" type="number" min="0" step="1" value="0" inputmode="numeric"></div>
+            <div class="field"><label for="sim_guaranteed">Ventas garantizadas</label><input id="sim_guaranteed" type="number" min="0" step="1" value="0" inputmode="numeric"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="group-title"><span class="bubble">02</span> Complementos de las ventas</div>
+          <div class="fields">
+            <div class="field"><label for="sim_dental">Planes dentales</label><input id="sim_dental" type="number" min="0" step="1" value="0" inputmode="numeric"></div>
+            <div class="field"><label for="sim_p0">Programas Cero</label><input id="sim_p0" type="number" min="0" step="1" value="0" inputmode="numeric"><span class="help">Mínimo 30% de ventas regulares</span></div>
+            <div class="field full">
+              <label for="sim_app">Activaciones APP</label>
+              <label class="checkrow"><input id="sim_autoApp" type="checkbox" checked> Contar una APP por cada venta válida</label>
+              <input id="sim_app" type="number" min="0" step="1" value="0" inputmode="numeric" disabled>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="group-title"><span class="bubble">03</span> Incidencias y descuentos</div>
+          <div class="fields">
+            <div class="field"><label for="sim_inc">Número de incidencias</label><input id="sim_inc" type="number" min="0" step="1" value="0" inputmode="numeric"><span class="help">1: sin bono · 2: −10% · 3: −20% · 4+: −30%</span></div>
+            <div class="field"><label for="sim_recover">Folios ya pagados a descontar ($)</label><input id="sim_recover" type="number" min="0" step="0.01" value="0" inputmode="decimal"><span class="help">Se descuenta al final; permite saldo negativo</span></div>
+          </div>
+        </div>
+        <p class="note"><strong>Importante:</strong> captura solamente ventas y complementos que sí son comisionables. Excluye los folios con incidencia, cancelados, incompletos o rechazados antes de ingresar las cantidades. El campo «incidencias» controla el bono y los descuentos adicionales; no descuenta folios automáticamente.</p>
+      </div>
+    </section>
+
+    <section class="card results" aria-labelledby="sim_results-title" aria-live="polite">
+      <div class="card-head"><h2 id="sim_results-title">Resultado · simulación</h2><p class="muted">Monto calculado con el factor de cumplimiento alcanzado.</p></div>
+      <div class="card-body">
+        <div class="total-label">Comisión final estimada</div>
+        <div class="money" id="sim_net">$0.00</div>
+        <div class="badges"><span class="pill no" id="sim_factor">Sin escalón</span><span class="pill" id="sim_penaltyPill">Sin penalizaciones</span></div>
+        <div class="stats">
+          <div><div class="stat-label">Ventas válidas</div><div class="stat-value" id="sim_sales">0</div></div>
+          <div><div class="stat-label">Cumplimiento</div><div class="stat-value" id="sim_compliance">0%</div></div>
+          <div><div class="stat-label">Programa Cero</div><div class="stat-value" id="sim_p0rate">Exento</div></div>
+        </div>
+        <p class="subheading">Desglose de la comisión</p>
+        <table class="details-table" aria-label="Detalle del cálculo">
+          <thead><tr><th style="width:43%">Concepto</th><th>Cant.</th><th>Tarifa</th><th>Subtotal</th></tr></thead>
+          <tbody>
+            <tr><td>Ventas</td><td id="sim_qSales">0</td><td id="sim_rSale">$0</td><td id="sim_cSale">$0.00</td></tr>
+            <tr><td>Plan Dental</td><td id="sim_qDental">0</td><td id="sim_rDental">$0</td><td id="sim_cDental">$0.00</td></tr>
+            <tr><td>Activación APP</td><td id="sim_qApp">0</td><td id="sim_rApp">$0</td><td id="sim_cApp">$0.00</td></tr>
+            <tr><td>Programa Cero</td><td id="sim_qP0">0</td><td id="sim_rP0">$0</td><td id="sim_cP0">$0.00</td></tr>
+            <tr class="sum"><td colspan="3">Comisiones por conceptos</td><td id="sim_gross">$0.00</td></tr>
+            <tr><td colspan="3">Bono por calidad</td><td id="sim_bonus">$0.00</td></tr>
+            <tr class="minus"><td colspan="3">Penalización Programa Cero <span id="sim_p0DiscountLabel"></span></td><td id="sim_p0Discount">−$0.00</td></tr>
+            <tr class="minus"><td colspan="3">Penalización incidencias <span id="sim_incDiscountLabel"></span></td><td id="sim_incDiscount">−$0.00</td></tr>
+            <tr class="minus"><td colspan="3">Descuentos de folios anteriores</td><td id="sim_priorDiscount">−$0.00</td></tr>
+          </tbody>
+        </table>
+        <div class="alert" id="sim_error" role="alert" hidden></div>
+        <p class="muted" id="sim_next" style="margin-top:16px">Ingresa tus ventas para conocer el siguiente escalón.</p>
+      </div>
+    </section>
+  </div>
+
+  <section class="card comparison" id="comparison"><div class="card-head"><h2>Comparativo de comisiones</h2><p class="muted">Diferencia de la simulación respecto al escenario base.</p></div><div class="compare-grid"><div><span>Escenario base</span><strong id="cmpBase">$0.00</strong></div><div><span>Simulación</span><strong id="cmpSim">$0.00</strong></div><div class="delta"><span>Ganancia o pérdida</span><strong id="cmpDiff">$0.00</strong><small id="cmpPct">0%</small></div></div><div class="compare-details" id="compareDetails"></div></section>
+  <div class="export-controls"><button id="exportImage" type="button">Exportar comparativo como imagen PNG</button><span id="exportStatus" role="status"></span></div>
+  <section id="exportReport" class="export-report" aria-label="Reporte para exportar"><div class="report-heading"><p class="eyebrow">INVEX · WM / Sam's Club</p><h2>CALCULADORA DE COMISIONES MANUAL</h2><p>Solo representa una simulación sobre el esquema de comisiones de septiembre 2026 y pudiera haber variaciones sobre el monto total a pagar.</p></div><div class="report-columns"><div class="report-panel"><h3>ESCENARIO BASE</h3><div id="reportBase"></div></div><div class="report-panel"><h3>SIMULACIÓN</h3><div id="reportSim"></div></div></div><div class="report-difference"><h3>COMPARATIVO DE RESULTADOS</h3><div id="reportCompare"></div></div><footer class="report-footer">Instrucciones: registra los datos reales en Escenario base, modifica los valores de Simulación y compara los importes. Una diferencia positiva indica mayor comisión estimada; una negativa, menor comisión. Los importes son orientativos y no sustituyen el cálculo oficial.</footer></section>
+  <section class="card tariff" aria-labelledby="tariff-title">
+    <div class="tariff-header"><div><h2 id="tariff-title">Tarifario por factor de cumplimiento</h2><p class="muted">Se resalta el escalón aplicado a tus comisiones.</p></div><span class="tier-status" id="tierStatus">Actualmente: sin escalón</span></div>
+    <div class="table-wrap"><table class="rates" id="rates"><thead><tr><th>Concepto</th><th data-tier="0">50% a &lt;61%</th><th data-tier="1">61% a &lt;81%</th><th data-tier="2">81% a &lt;101%</th><th data-tier="3">101% o más</th></tr></thead><tbody>
+      <tr><td>Pago por venta</td><td data-tier="0">$50</td><td data-tier="1">$70</td><td data-tier="2">$90</td><td data-tier="3">$130</td></tr>
+      <tr><td>Plan Dental</td><td data-tier="0">$50</td><td data-tier="1">$70</td><td data-tier="2">$90</td><td data-tier="3">$100</td></tr>
+      <tr><td>Activación APP</td><td data-tier="0">$50</td><td data-tier="1">$70</td><td data-tier="2">$90</td><td data-tier="3">$130</td></tr>
+      <tr><td>Programa Cero</td><td data-tier="0">$140</td><td data-tier="1">$230</td><td data-tier="2">$290</td><td data-tier="3">$350</td></tr>
+      <tr class="sumline"><td>Total por venta completa</td><td data-tier="0">$290</td><td data-tier="1">$440</td><td data-tier="2">$560</td><td data-tier="3">$710</td></tr>
+      <tr><td>Bono calidad semanal</td><td data-tier="0">$300</td><td data-tier="1">$450</td><td data-tier="2">$650</td><td data-tier="3">$800</td></tr>
+    </tbody></table></div>
+    <p class="footer-note">Los porcentajes se utilizan sin redondear: un 60.9% todavía pertenece al primer escalón, y el siguiente se alcanza únicamente al llegar al 61%. Programa Cero exige al menos 30% de regulares; si no hay ventas regulares, queda exento. Los descuentos porcentuales se suman.</p>
+  </section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+(()=>{
+'use strict';
+const tiers=[
+{min:50,label:'50% a menos de 61%',sale:50,dental:50,app:50,p0:140,bonus:300},
+{min:61,label:'61% a menos de 81%',sale:70,dental:70,app:70,p0:230,bonus:450},
+{min:81,label:'81% a menos de 101%',sale:90,dental:90,app:90,p0:290,bonus:650},
+{min:101,label:'101% o más',sale:130,dental:100,app:130,p0:350,bonus:800}];
+const $=id=>document.getElementById(id);
+const pesos=new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2,maximumFractionDigits:2});
+const fmt=n=>pesos.format(n||0), pct=n=>new Intl.NumberFormat('es-MX',{maximumFractionDigits:2}).format(n)+'%';
+const round=n=>Math.round((n+Number.EPSILON)*100)/100;
+const keys=['goal','regular','guaranteed','dental','p0','app','inc','recover'];
+const results={};
+function set(p,id,v){$(p+'_'+id).textContent=v;}
+function calculate(p){
+const val=k=>Number($(p+'_'+k).value);
+const reg=val('regular'),guar=val('guaranteed'),goal=val('goal'),dental=val('dental'),p0=val('p0'),inc=val('inc'),recover=val('recover'),sales=reg+guar;
+if($(p+'_autoApp').checked)$(p+'_app').value=Number.isFinite(sales)&&sales>=0?sales:0;
+const app=val('app');
+const data={reg,guar,goal,dental,p0,inc,recover,app};
+const errors=[];
+for(const [k,v] of Object.entries(data)){if(!Number.isFinite(v)||v<0)errors.push('Todos los campos deben tener valores válidos no negativos.');else if(k!=='recover'&&!Number.isInteger(v))errors.push('Las cantidades y el objetivo deben ser números enteros.');}
+if(goal<1)errors.push('El objetivo semanal debe ser al menos una venta.');
+if(dental>sales)errors.push('Los planes dentales no pueden superar las ventas válidas.');
+if(app>sales)errors.push('Las APP no pueden superar las ventas válidas.');
+if(p0>reg)errors.push('Programa Cero no puede superar las ventas regulares.');
+set(p,'error',errors[0]||'');$(p+'_error').hidden=!errors.length;
+if(errors.length){set(p,'net','—');set(p,'factor','Datos por corregir');set(p,'penaltyPill','Revisa las cantidades');set(p,'next','Corrige los valores para calcular.');for(const id of ['sales','compliance','p0rate','qSales','qDental','qApp','qP0','rSale','rDental','rApp','rP0','cSale','cDental','cApp','cP0','gross','bonus','p0Discount','incDiscount','priorDiscount'])set(p,id,'—');return null;}
+const compliance=sales/goal*100;
+const tierIndex=tiers.reduce((idx,t,i)=>compliance>=t.min?i:idx,-1),tier=tierIndex<0?null:tiers[tierIndex];
+const rate={sale:tier?.sale||0,dental:tier?.dental||0,app:tier?.app||0,p0:tier?.p0||0};
+const portions={sale:round(sales*rate.sale),dental:round(dental*rate.dental),app:round(app*rate.app),p0:round(p0*rate.p0)};
+const gross=round(Object.values(portions).reduce((a,b)=>a+b,0)),bonus=inc===0?(tier?.bonus||0):0;
+const p0Pct=reg>0?p0/reg*100:null,p0Penalty=reg>0&&p0*100<reg*30?15:0,incPenalty=inc>=4?30:inc===3?20:inc===2?10:0;
+const beforePenalty=round(gross+bonus),discountP0=round(beforePenalty*p0Penalty/100),discountInc=round(beforePenalty*incPenalty/100),net=round(beforePenalty-round(beforePenalty*(p0Penalty+incPenalty)/100)-recover);
+set(p,'net',fmt(net));$(p+'_net').classList.toggle('negative',net<0);
+set(p,'factor',tier?tier.label:'Menos del 50% · sin pago');$(p+'_factor').className='pill '+(tier?'good':'no');
+set(p,'penaltyPill',p0Penalty+incPenalty?'Descuento '+(p0Penalty+incPenalty)+'%':'Sin descuentos porcentuales');$(p+'_penaltyPill').className='pill '+(p0Penalty+incPenalty?'warn':'');
+set(p,'sales',sales);set(p,'compliance',pct(compliance));set(p,'p0rate',p0Pct===null?'Exento':pct(p0Pct));
+for(const [id,value] of Object.entries({qSales:sales,qDental:dental,qApp:app,qP0:p0,rSale:fmt(rate.sale),rDental:fmt(rate.dental),rApp:fmt(rate.app),rP0:fmt(rate.p0),cSale:fmt(portions.sale),cDental:fmt(portions.dental),cApp:fmt(portions.app),cP0:fmt(portions.p0),gross:fmt(gross),bonus:fmt(bonus),p0Discount:'−'+fmt(discountP0),incDiscount:'−'+fmt(discountInc),priorDiscount:'−'+fmt(recover),p0DiscountLabel:'('+p0Penalty+'%)',incDiscountLabel:'('+incPenalty+'%)'}))set(p,id,value);
+const next=tiers.find(t=>t.min>compliance);
+set(p,'next',next?`Para alcanzar el factor de ${next.min}%, necesitas ${Math.max(0,Math.ceil(next.min*goal/100-1e-10)-sales)} ventas válidas adicionales.`:'Has alcanzado el escalón máximo de pago.');
+return {net,sales,reg,guar,goal,dental,p0,app,inc,recover,compliance,p0Pct,tierIndex,tier,rate,portions,gross,bonus,p0Penalty,incPenalty,discountP0,discountInc};
+}
+function highlight(i){document.querySelectorAll('#rates [data-tier]').forEach(el=>{const hit=Number(el.dataset.tier)===i;el.classList.toggle('hit',hit);const old=el.querySelector('.tag-current');if(old)old.remove();if(hit&&el.tagName==='TH'){const tag=document.createElement('span');tag.className='tag-current';tag.textContent='FACTOR BASE';el.appendChild(tag);}});}
+function reportTable(d){const rows=[['Objetivo semanal',d.goal],['Ventas regulares',d.reg],['Ventas garantizadas',d.guar],['Ventas válidas',d.sales],['Cumplimiento',pct(d.compliance)],['Planes dentales',d.dental],['Programas Cero',d.p0],['Activaciones APP',d.app],['Incidencias',d.inc],['Factor',d.tier?d.tier.label:'Sin escalón'],['Ventas · comisión',fmt(d.portions.sale)],['Plan Dental · comisión',fmt(d.portions.dental)],['APP · comisión',fmt(d.portions.app)],['Programa Cero · comisión',fmt(d.portions.p0)],['Comisiones por conceptos',fmt(d.gross)],['Bono calidad',fmt(d.bonus)],['Penalización P0 ('+d.p0Penalty+'%)','−'+fmt(d.discountP0)],['Penalización incidencias ('+d.incPenalty+'%)','−'+fmt(d.discountInc)],['Folios pagados anteriormente','−'+fmt(d.recover)],['COMISIÓN FINAL ESTIMADA',fmt(d.net)]];return '<table>'+rows.map((r,i)=>'<tr'+(i===rows.length-1?' class="emphasis"':'')+'><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('')+'</table>';}
+function refresh(){results.base=calculate('base');results.sim=calculate('sim');const a=results.base,b=results.sim;
+$('tierStatus').textContent='Factor base: '+(a?.tier?.label||'sin escalón');highlight(a?.tierIndex??-1);
+if(!a||!b){$('cmpBase').textContent=a?fmt(a.net):'—';$('cmpSim').textContent=b?fmt(b.net):'—';$('cmpDiff').textContent='—';$('cmpPct').textContent='Corrige los datos';$('compareDetails').textContent='Ambos escenarios deben ser válidos para comparar.';$('exportImage').disabled=true;return;}
+$('exportImage').disabled=false;const diff=round(b.net-a.net),percentage=a.net===0?(diff===0?'0%':'No calculable (base $0)'):pct(Math.abs(diff/a.net*100));
+$('cmpBase').textContent=fmt(a.net);$('cmpSim').textContent=fmt(b.net);$('cmpDiff').textContent=(diff>0?'+':diff<0?'−':'')+fmt(Math.abs(diff));$('cmpPct').textContent=(diff>0?'Ganancia ':diff<0?'Pérdida ':'Sin cambio · ')+percentage;
+for(const id of ['cmpDiff','cmpPct'])$(id).className=diff>0?'positive':diff<0?'negative-delta':'';
+$('compareDetails').textContent=`Diferencia de ventas: ${b.sales-a.sales>=0?'+':''}${b.sales-a.sales} · Diferencia de cumplimiento: ${(b.compliance-a.compliance)>=0?'+':''}${pct(round(b.compliance-a.compliance))} puntos porcentuales · Diferencia en bono: ${fmt(round(b.bonus-a.bonus))}.`;
+$('reportBase').innerHTML=reportTable(a);$('reportSim').innerHTML=reportTable(b);
+$('reportCompare').innerHTML='<table><tr><td>Comisión escenario base</td><td>'+fmt(a.net)+'</td></tr><tr><td>Comisión simulación</td><td>'+fmt(b.net)+'</td></tr><tr class="emphasis"><td>GANANCIA / PÉRDIDA</td><td class="'+(diff>0?'positive':diff<0?'negative-delta':'')+'">'+(diff>0?'+':diff<0?'−':'')+fmt(Math.abs(diff))+'</td></tr><tr><td>Variación porcentual respecto a la base</td><td>'+percentage+'</td></tr><tr><td>Diferencia en ventas</td><td>'+(b.sales-a.sales)+'</td></tr><tr><td>Diferencia en cumplimiento (puntos porcentuales)</td><td>'+pct(round(b.compliance-a.compliance))+'</td></tr></table>';
+}
+for(const p of ['base','sim']){for(const k of keys)$(p+'_'+k).addEventListener('input',refresh);$(p+'_autoApp').addEventListener('change',()=>{$(p+'_app').disabled=$(p+'_autoApp').checked;refresh();});}
+$('copyBase').addEventListener('click',()=>{for(const k of keys)$( 'sim_'+k).value=$('base_'+k).value;$('sim_autoApp').checked=$('base_autoApp').checked;$('sim_app').disabled=$('sim_autoApp').checked;refresh();});
+$('exportImage').addEventListener('click',async()=>{const status=$('exportStatus'),btn=$('exportImage');if(!results.base||!results.sim)return;if(typeof html2canvas!=='function'){status.textContent='No se pudo cargar el motor de exportación. Revisa tu conexión a internet.';return;}btn.disabled=true;status.textContent='Generando PNG en alta resolución…';try{const el=$('exportReport');const canvas=await html2canvas(el,{backgroundColor:'#ffffff',scale:3,useCORS:true,logging:false,width:1280,windowWidth:1400,scrollX:0,scrollY:0,onclone:doc=>{const report=doc.getElementById('exportReport');report.style.position='relative';report.style.left='0';report.style.top='0';report.style.margin='0';}});const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('No se pudo generar el PNG');const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='calculadora_comisiones_manual_comparativo.png';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);status.textContent='Imagen PNG generada correctamente ('+canvas.width+' × '+canvas.height+' px).';}catch(e){status.textContent='Error al exportar: '+e.message;}finally{btn.disabled=false;}});
+refresh();window.CALC_MANUAL={refresh,tiers};
+})();
+</script>
+</body>
+</html>
