@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#003b7a">
-<title>Calculadora de Comisiones · WM / Sam's</title>
+<title>Calculadora de Comisiones Manual · Colaboradores y Supervisores</title>
 <style>
   :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:#172a43;background:#f3f6fb;font-synthesis:none}
   *{box-sizing:border-box}
@@ -88,19 +88,74 @@
   .export-controls{display:flex;align-items:center;gap:15px;margin:20px 0 25px;flex-wrap:wrap}.export-controls button{background:#07549a;color:white;border:0;border-radius:12px;padding:15px 20px;font-size:14px;font-weight:850}.export-controls span{font-size:12px;color:#63758d}
   .export-report{position:absolute;left:-100000px;top:0;width:1280px;padding:52px;background:#fff;color:#163351;font-family:Inter,Arial,sans-serif}.report-heading{text-align:center;border-bottom:3px solid #0a4d8e;padding-bottom:24px;margin-bottom:26px}.report-heading h2{font-size:31px;color:#073e76;letter-spacing:.02em}.report-heading>p:last-child{font-size:15px;line-height:1.5;color:#52647c;max-width:1000px;margin:12px auto 0}.report-columns{display:grid;grid-template-columns:1fr 1fr;gap:24px}.report-panel{border:1px solid #d5e2f0;border-radius:14px;overflow:hidden}.report-panel h3{background:#0a4d8e;color:white;font-size:19px;padding:15px 20px;margin:0}.report-panel>div{padding:18px}.report-panel table,.report-difference table{width:100%;border-collapse:collapse;font-size:15px}.report-panel td,.report-difference td{padding:10px 7px;border-bottom:1px solid #e8edf3}.report-panel td:last-child,.report-difference td:not(:first-child){text-align:right;font-weight:750}.report-panel tr.emphasis td{font-size:20px;font-weight:850;background:#e9f3fc;color:#063e76}.report-difference{margin-top:25px;border:1px solid #d5e2f0;border-radius:14px;padding:20px}.report-difference h3{margin:0 0 12px;font-size:19px;color:#0a4d8e}.report-footer{border-top:1px solid #d5e2f0;margin-top:28px;padding-top:16px;font-size:13px;line-height:1.55;color:#617189}
   @media(max-width:600px){.compare-grid{grid-template-columns:1fr}.scenario-label .secondary{margin-left:0;width:100%}}
+
+/* Navegación entre calculadoras independientes */
+.page-tabs{display:flex;gap:9px;flex-wrap:wrap;padding:6px;background:#e6eef8;border-radius:14px;margin:-4px 0 22px;max-width:540px}
+.page-tab{flex:1;min-width:180px;padding:12px 15px;border:0;background:transparent;border-radius:10px;font-size:13px;font-weight:850;color:#54708e}
+.page-tab.active{background:#fff;color:#0b4383;box-shadow:0 2px 9px #183b6222}
+#employeePage[hidden],#supervisorPage[hidden],#sp_ownFields[hidden],#sp_helpOverlay[hidden]{display:none!important}
+.sp-page-head{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+.sp-page-head h2{font-size:25px;color:#0b4383}.sp-page-head p{font-size:12px;color:#62758c;line-height:1.5;max-width:720px;margin:6px 0 0}
+.sp-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr);gap:18px;align-items:start}
+.sp-input-stack,.sp-result-stack{display:grid;gap:16px;min-width:0}
+.sp-simple-group+.sp-simple-group{margin-top:19px;border-top:1px solid #e7edf6;padding-top:18px}
+.sp-simple-group h3{margin:0 0 12px;color:#284a70;font-size:13px}
+.sp-simple-group .fields{gap:11px}
+.sp-inline-check{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:750;color:#2c506d;cursor:pointer;margin:7px 0 13px}
+.sp-extra-panel{border-radius:14px;border:1px solid #dbe6f2;background:#f8fbfe;padding:13px 16px}
+.sp-extra-panel summary{font-size:13px;font-weight:800;color:#164a7a;cursor:pointer;list-style-position:outside}
+.sp-extra-panel[open] summary{padding-bottom:12px;border-bottom:1px solid #e0e9f4;margin-bottom:14px}
+.sp-extra-panel .fields{margin-top:10px}
+.sp-summary-bar{background:linear-gradient(110deg,#083d79,#155b9c);border-radius:17px;padding:23px 23px 20px;color:#fff}
+.sp-summary-bar .overline{font-weight:850;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#cfe5ff}
+.sp-summary-bar .sp-total{font-size:clamp(32px,4vw,46px);font-variant-numeric:tabular-nums;font-weight:900;letter-spacing:-.055em;margin:6px 0 3px}
+.sp-summary-bar p{font-size:12px;color:#d9eafa;margin:2px 0 0}
+.sp-kpi-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:13px}
+.sp-kpi{background:#eff5fc;border:1px solid #dce9f7;border-radius:12px;padding:14px;min-width:0}
+.sp-kpi small{display:block;color:#647a94;font-size:11px}.sp-kpi strong{display:block;font-size:23px;color:#113c6c;margin-top:5px;font-variant-numeric:tabular-nums}
+.sp-result-table{width:100%;border-collapse:collapse;font-size:12px}
+.sp-result-table th{font-size:10px;color:#6b7c8d;text-transform:uppercase;text-align:right;border-bottom:1px solid #dbe5f0;padding:10px 6px}
+.sp-result-table th:first-child{text-align:left}.sp-result-table td{border-bottom:1px solid #edf1f6;padding:9px 6px;text-align:right;font-variant-numeric:tabular-nums}.sp-result-table td:first-child{text-align:left;color:#2a4d6e;font-weight:650}
+.sp-result-table tr.em td{background:#eaf3fd;font-weight:850;color:#0b4785}.sp-result-table tr.total td{background:#0b4383;color:white;font-weight:900}.sp-result-table tr.minus td:last-child{color:#b04538}.sp-result-table tr:last-child td{border-bottom:0}
+.sp-status{font-size:12px;color:#57728d;margin-top:12px;line-height:1.5}.sp-warning{font-size:12px;line-height:1.5;color:#8f392e;background:#fff0e9;border:1px solid #f0c1ab;padding:12px;border-radius:10px}
+.sp-warning[hidden]{display:none}
+.sp-btn-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:15px 0 0}
+.sp-primary{border:0;border-radius:10px;background:#07549a;color:#fff;font-weight:850;font-size:12px;padding:12px 16px;cursor:pointer}
+.sp-primary:disabled{opacity:.45;cursor:not-allowed}
+.sp-small-muted{font-size:11px;color:#71849c;line-height:1.4}
+.sp-tariffs{width:100%;font-size:11px;border-collapse:collapse;text-align:right}
+.sp-tariffs th,.sp-tariffs td{padding:7px 4px;border-bottom:1px solid #e7edf4}.sp-tariffs th:first-child{text-align:left;color:#4b637b}.sp-tariffs input[type=number]{height:36px;padding:0 6px;font-size:12px;min-width:54px}
+.sp-help-fab{position:fixed;z-index:51;right:22px;bottom:22px;border:0;border-radius:99px;background:#0d5a9e;color:white;box-shadow:0 9px 24px #0c427063;padding:14px 19px;font-size:13px;font-weight:850;cursor:pointer}
+.sp-help-fab:focus-visible,.page-tab:focus-visible,.sp-primary:focus-visible{outline:3px solid #ff923b;outline-offset:3px}
+.sp-help-overlay{position:fixed;inset:0;z-index:100;background:#0a244fc4;display:grid;place-items:center;padding:15px}
+.sp-help-dialog{position:relative;background:#fff;border-radius:18px;padding:25px 27px;max-width:580px;width:100%;max-height:85vh;overflow:auto;box-shadow:0 20px 70px #001c3a66}
+.sp-help-dialog h2{font-size:21px;margin:0 32px 12px 0}.sp-help-dialog ol{padding-left:20px;font-size:13px;line-height:1.8;color:#3b536e}
+.sp-help-close{position:absolute;top:14px;right:14px;font-size:22px;background:#eff4fa;border:0;border-radius:10px;width:35px;height:35px;color:#274d77}
+.sp-print-report{position:absolute;left:-100000px;top:0;width:1120px;background:#fff;padding:46px;font-family:Arial,sans-serif;color:#183658}
+.sp-print-report h2{font-size:28px;color:#003b7a;margin:0}.sp-print-report .sp-print-head{padding:20px;background:#0b4383;color:white;border-radius:12px}.sp-print-report .sp-print-head h2{color:white}.sp-print-report .sp-print-head p{color:#cce1fb;font-size:13px}
+.sp-print-report .sp-print-total{background:#ff914b;border-radius:10px;padding:18px;color:white;font-weight:900;font-size:26px;text-align:right;margin:15px 0}
+.sp-print-report .sp-print-columns{display:grid;grid-template-columns:1fr 1fr;gap:20px}.sp-print-report h3{font-size:17px;color:#0b4383;margin:20px 0 8px}.sp-print-report p{font-size:13px;line-height:1.5}
+@media(max-width:860px){.sp-grid{grid-template-columns:1fr}}
+@media(max-width:500px){.page-tab{min-width:0;font-size:12px}.sp-page-head h2{font-size:22px}.sp-result-table{font-size:11px}.sp-help-fab{right:12px;bottom:12px;padding:12px 15px}.sp-kpi strong{font-size:20px}.sp-simple-group .fields{gap:10px}}
+
 </style>
 </head>
 <body>
 <main class="shell">
   <header class="header">
     <div>
-      <p class="eyebrow">WM / Sam's Club · Ejecutivos</p>
+      <p class="eyebrow">WM / Sam's Club · Simuladores</p>
       <h1>Calculadora de comisiones manual</h1>
-      <p class="subtitle">Solo representa una simulación sobre el esquema de comisiones de septiembre 2026 y pudiera haber variaciones sobre el monto total a pagar.</p>
+      <p class="subtitle">Simulador sin carga de archivos. Selecciona Colaboradores o Supervisores para estimar tus comisiones de forma manual.</p>
     </div>
     <span class="brand">INVEX · SIMULADOR</span>
   </header>
 
+  <nav class="page-tabs" role="tablist" aria-label="Tipo de calculadora">
+    <button type="button" class="page-tab active" role="tab" aria-selected="true" data-page="employee" aria-controls="employeePage">Colaboradores</button>
+    <button type="button" class="page-tab" role="tab" aria-selected="false" data-page="supervisor" aria-controls="supervisorPage">Supervisores</button>
+  </nav>
+  <section id="employeePage" aria-label="Calculadora de colaboradores">
   <div class="scenario-label"><span>01</span><div><h2>Escenario base</h2><p>Resultados originales para establecer el punto de comparación.</p></div></div>
   <div class="workspace scenario-workspace">
     <section class="card" aria-labelledby="base_input-title">
@@ -252,6 +307,140 @@
     </tbody></table></div>
     <p class="footer-note">Los porcentajes se utilizan sin redondear: un 60.9% todavía pertenece al primer escalón, y el siguiente se alcanza únicamente al llegar al 61%. Programa Cero exige al menos 30% de regulares; si no hay ventas regulares, queda exento. Los descuentos porcentuales se suman.</p>
   </section>
+  </section>
+
+  <section id="supervisorPage" aria-label="Calculadora manual de supervisores" hidden>
+    <div class="sp-page-head">
+      <div>
+        <p class="eyebrow">Simulador manual · Supervisores</p>
+        <h2>Comisión del supervisor</h2>
+        <p>Ingresa los totales semanales del equipo. El sistema calculará automáticamente las cuatro calidades, el alcance global y el bono. Las ventas propias son opcionales.</p>
+      </div>
+      <button id="sp_reset" class="secondary" type="button">Restablecer datos</button>
+    </div>
+    <div class="sp-grid">
+      <div class="sp-input-stack">
+        <section class="card">
+          <div class="card-head"><h2>1. Ventas y calidad del equipo</h2><p class="muted">Registra solo ventas válidas y pagables, sin contar las del supervisor.</p></div>
+          <div class="card-body">
+            <div class="sp-simple-group"><h3>Meta y ventas</h3><div class="fields">
+              <div class="field full"><label for="sp_goal">Objetivo de ventas del módulo</label><input id="sp_goal" type="number" min="1" step="1" value="20"></div>
+              <div class="field"><label for="sp_teamReg">Ventas regulares del equipo</label><input id="sp_teamReg" type="number" min="0" step="1" value="0"></div>
+              <div class="field"><label for="sp_teamGuar">Ventas garantizadas del equipo</label><input id="sp_teamGuar" type="number" min="0" step="1" value="0"></div>
+            </div></div>
+            <div class="sp-simple-group"><h3>Complementos de ventas del equipo</h3><div class="fields">
+              <div class="field"><label for="sp_teamPurchase">Ventas con primera compra</label><input id="sp_teamPurchase" type="number" min="0" step="1" value="0"><span class="help">Ventas con Plan Cero o Dental; si tienen ambos cuentan una sola vez.</span></div>
+              <div class="field"><label for="sp_teamP0">Programas Cero</label><input id="sp_teamP0" type="number" min="0" step="1" value="0"><span class="help">Únicamente de ventas regulares.</span></div>
+              <div class="field full"><label for="sp_teamApp">Tarjetas activadas (APP)</label><input id="sp_teamApp" type="number" min="0" step="1" value="0"></div>
+            </div></div>
+          </div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>2. Ventas propias del supervisor <span class="pill">Opcional</span></h2><p class="muted">Actívalo únicamente si también realizaste ventas durante la semana.</p></div>
+          <div class="card-body">
+            <label class="sp-inline-check"><input id="sp_ownEnabled" type="checkbox"> También tuve ventas propias</label>
+            <div id="sp_ownFields" hidden>
+              <div class="fields">
+                <div class="field"><label for="sp_ownReg">Regulares propias</label><input id="sp_ownReg" type="number" min="0" step="1" value="0"></div>
+                <div class="field"><label for="sp_ownGuar">Garantizadas propias</label><input id="sp_ownGuar" type="number" min="0" step="1" value="0"></div>
+                <div class="field"><label for="sp_ownDental">Planes Dentales</label><input id="sp_ownDental" type="number" min="0" step="1" value="0"></div>
+                <div class="field"><label for="sp_ownP0">Programas Cero</label><input id="sp_ownP0" type="number" min="0" step="1" value="0"></div>
+                <div class="field full"><label for="sp_ownApp">Activaciones APP propias</label><label class="sp-inline-check"><input id="sp_ownAutoApp" type="checkbox" checked> Contar una APP por venta propia</label><input id="sp_ownApp" type="number" min="0" step="1" value="0" disabled></div>
+                <div class="field"><label for="sp_ownInc">Incidencias propias</label><input id="sp_ownInc" type="number" min="0" step="1" value="0"><span class="help">No vuelvas a contar los folios excluidos en ventas pagables.</span></div>
+                <div class="field"><label for="sp_ownDynamic">Ventas propias con bono por dinámica</label><input id="sp_ownDynamic" type="number" min="0" step="1" value="0"></div>
+              </div>
+              <label class="sp-inline-check" style="margin-top:16px"><input id="sp_includeOwn" type="checkbox" checked> Incluir mis ventas en el cumplimiento del módulo</label>
+              <p class="help">El escalón para pagar tus ventas propias siempre depende exclusivamente del cumplimiento del equipo.</p>
+            </div>
+            <p class="note" id="sp_ownHint" style="margin-top:4px">Si no realizaste ventas propias, el pago estimado será únicamente el bono por resultados del módulo.</p>
+          </div>
+        </section>
+        <details class="sp-extra-panel" id="sp_options">
+          <summary>3. Ajustes opcionales: bono, porcentajes y tarifas</summary>
+          <p class="muted">Valores iniciales tomados del esquema de supervisor. Cámbialos si necesitas simular otros parámetros.</p>
+          <div class="sp-simple-group"><h3>Bono y dinámica</h3><div class="fields">
+            <div class="field"><label for="sp_baseBonus">Bono base ($)</label><input id="sp_baseBonus" type="number" min="0" step="0.01" value="4000"></div>
+            <div class="field"><label for="sp_dynamicAmount">Monto por dinámica ($/venta)</label><input id="sp_dynamicAmount" type="number" min="0" step="0.01" value="0"></div>
+          </div></div>
+          <div class="sp-simple-group"><h3>Bonos por sobrecumplimiento (se paga solo un tramo)</h3><div class="fields">
+            <div class="field"><label for="sp_bonusThreshold1">Tramo 1 (%)</label><input id="sp_bonusThreshold1" type="number" min="0" step="0.01" value="110"></div><div class="field"><label for="sp_bonusAmount1">Monto tramo 1 ($)</label><input id="sp_bonusAmount1" type="number" min="0" step="0.01" value="500"></div>
+            <div class="field"><label for="sp_bonusThreshold2">Tramo 2 (%)</label><input id="sp_bonusThreshold2" type="number" min="0" step="0.01" value="115"></div><div class="field"><label for="sp_bonusAmount2">Monto tramo 2 ($)</label><input id="sp_bonusAmount2" type="number" min="0" step="0.01" value="1000"></div>
+            <div class="field"><label for="sp_bonusThreshold3">Tramo 3 (%)</label><input id="sp_bonusThreshold3" type="number" min="0" step="0.01" value="120"></div><div class="field"><label for="sp_bonusAmount3">Monto tramo 3 ($)</label><input id="sp_bonusAmount3" type="number" min="0" step="0.01" value="1500"></div>
+          </div></div>
+          <div class="sp-simple-group"><h3>Objetivos y mínimos de calidad</h3><div class="fields">
+            <div class="field"><label for="sp_reqCompletion">Requerido cumplimiento (%)</label><input id="sp_reqCompletion" type="number" min="0.01" step="0.01" value="100"></div><div class="field"><label for="sp_minCompletion">Mínimo calidad (%)</label><input id="sp_minCompletion" type="number" min="0" step="0.01" value="60"></div>
+            <div class="field"><label for="sp_reqPurchase">Requerido primera compra (%)</label><input id="sp_reqPurchase" type="number" min="0.01" step="0.01" value="90"></div><div class="field"><label for="sp_minPurchase">Mínimo calidad (%)</label><input id="sp_minPurchase" type="number" min="0" step="0.01" value="60"></div>
+            <div class="field"><label for="sp_reqP0">Requerido Programa Cero (%)</label><input id="sp_reqP0" type="number" min="0.01" step="0.01" value="30"></div><div class="field"><label for="sp_minP0">Mínimo calidad (%)</label><input id="sp_minP0" type="number" min="0" step="0.01" value="60"></div>
+            <div class="field"><label for="sp_reqApp">Requerido APP (%)</label><input id="sp_reqApp" type="number" min="0.01" step="0.01" value="90"></div><div class="field"><label for="sp_minApp">Mínimo calidad (%)</label><input id="sp_minApp" type="number" min="0" step="0.01" value="60"></div>
+          </div><p class="help">Cumplimiento y Programa Cero no tienen máximo. Primera compra y APP se topan al 100%.</p></div>
+          <div class="sp-simple-group"><h3>Descuentos</h3><div class="fields">
+            <div class="field"><label for="sp_moduleP0Threshold">P0 mínimo módulo (%)</label><input id="sp_moduleP0Threshold" type="number" min="0" step="0.01" value="30"></div><div class="field"><label for="sp_moduleP0Penalty">Descuento bono módulo (%)</label><input id="sp_moduleP0Penalty" type="number" min="0" max="100" step="0.01" value="15"></div>
+            <div class="field"><label for="sp_ownP0Threshold">P0 mínimo propias (%)</label><input id="sp_ownP0Threshold" type="number" min="0" step="0.01" value="30"></div><div class="field"><label for="sp_ownP0Penalty">Descuento ventas propias (%)</label><input id="sp_ownP0Penalty" type="number" min="0" max="100" step="0.01" value="15"></div>
+          </div><label class="sp-inline-check"><input id="sp_ownP0UseModule" type="checkbox"> Evaluar descuento P0 de ventas propias usando los resultados del módulo</label>
+          <div class="fields"><div class="field"><label for="sp_inc2">2 incidencias (%)</label><input id="sp_inc2" type="number" min="0" max="100" step="0.01" value="10"></div><div class="field"><label for="sp_inc3">3 incidencias (%)</label><input id="sp_inc3" type="number" min="0" max="100" step="0.01" value="20"></div><div class="field"><label for="sp_inc4">4 o más incidencias (%)</label><input id="sp_inc4" type="number" min="0" max="100" step="0.01" value="30"></div></div>
+          <p class="help">Con una incidencia no se descuenta porcentaje. Las comisiones propias no reciben bono semanal de calidad.</p></div>
+          <details class="sp-extra-panel" style="margin-top:15px;background:#fff">
+            <summary>Tarifario para ventas propias (editable)</summary>
+            <div class="table-wrap" style="padding:0"><table class="sp-tariffs"><thead><tr><th>Escalón (%)</th><th>Venta ($)</th><th>Dental ($)</th><th>APP ($)</th><th>P0 ($)</th></tr></thead><tbody>
+            <tr><th><input aria-label="Mínimo tramo 1" id="sp_tier1Min" type="number" value="50" step="0.01" min="0"></th><td><input id="sp_tier1Sale" aria-label="Tarifa ventas 1" type="number" value="50" step="0.01" min="0"></td><td><input id="sp_tier1Dental" aria-label="Tarifa dental 1" type="number" value="50" step="0.01" min="0"></td><td><input id="sp_tier1App" aria-label="Tarifa APP 1" type="number" value="50" step="0.01" min="0"></td><td><input id="sp_tier1P0" aria-label="Tarifa P0 1" type="number" value="140" step="0.01" min="0"></td></tr>
+            <tr><th><input aria-label="Mínimo tramo 2" id="sp_tier2Min" type="number" value="61" step="0.01" min="0"></th><td><input id="sp_tier2Sale" aria-label="Tarifa ventas 2" type="number" value="70" step="0.01" min="0"></td><td><input id="sp_tier2Dental" aria-label="Tarifa dental 2" type="number" value="70" step="0.01" min="0"></td><td><input id="sp_tier2App" aria-label="Tarifa APP 2" type="number" value="70" step="0.01" min="0"></td><td><input id="sp_tier2P0" aria-label="Tarifa P0 2" type="number" value="230" step="0.01" min="0"></td></tr>
+            <tr><th><input aria-label="Mínimo tramo 3" id="sp_tier3Min" type="number" value="81" step="0.01" min="0"></th><td><input id="sp_tier3Sale" aria-label="Tarifa ventas 3" type="number" value="90" step="0.01" min="0"></td><td><input id="sp_tier3Dental" aria-label="Tarifa dental 3" type="number" value="90" step="0.01" min="0"></td><td><input id="sp_tier3App" aria-label="Tarifa APP 3" type="number" value="90" step="0.01" min="0"></td><td><input id="sp_tier3P0" aria-label="Tarifa P0 3" type="number" value="290" step="0.01" min="0"></td></tr>
+            <tr><th><input aria-label="Mínimo tramo 4" id="sp_tier4Min" type="number" value="101" step="0.01" min="0"></th><td><input id="sp_tier4Sale" aria-label="Tarifa ventas 4" type="number" value="130" step="0.01" min="0"></td><td><input id="sp_tier4Dental" aria-label="Tarifa dental 4" type="number" value="100" step="0.01" min="0"></td><td><input id="sp_tier4App" aria-label="Tarifa APP 4" type="number" value="130" step="0.01" min="0"></td><td><input id="sp_tier4P0" aria-label="Tarifa P0 4" type="number" value="350" step="0.01" min="0"></td></tr>
+            </tbody></table></div>
+          </details>
+        </details>
+      </div>
+      <div class="sp-result-stack">
+        <section class="card" id="sp_resultCard" aria-live="polite">
+          <div class="card-body">
+            <div class="sp-summary-bar"><div class="overline">Comisión total simulada</div><div class="sp-total" id="sp_total">$0.00</div><p>Bono del módulo + ventas propias + dinámica</p></div>
+            <div class="sp-kpi-grid"><div class="sp-kpi"><small>Cumplimiento módulo</small><strong id="sp_compliance">0%</strong></div><div class="sp-kpi"><small>Alcance Global</small><strong id="sp_global">0%</strong></div><div class="sp-kpi"><small>Ventas válidas equipo</small><strong id="sp_teamSales">0</strong></div><div class="sp-kpi"><small>Calidad Total</small><strong id="sp_composite">0%</strong></div></div>
+            <div class="sp-warning" id="sp_error" role="alert" hidden></div>
+            <p class="sp-status" id="sp_summaryStatus">Completa las cantidades para simular los ingresos.</p>
+          </div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>Calidades del módulo</h2><p class="muted">El mínimo inicial del 60% se aplica a cada calidad individual, no al alcance real.</p></div>
+          <div class="card-body"><table class="sp-result-table"><thead><tr><th>Factor</th><th>Alcance real</th><th>Calidad</th></tr></thead><tbody id="sp_qualityRows"></tbody></table></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>Desglose del pago</h2><p class="muted">El cumplimiento reduce el bono base solo por debajo del 100%.</p></div>
+          <div class="card-body"><table class="sp-result-table"><thead><tr><th>Concepto</th><th>Importe</th></tr></thead><tbody id="sp_paymentRows"></tbody></table></div>
+        </section>
+        <section class="card" id="sp_ownResultCard" hidden>
+          <div class="card-head"><h2>Detalle de ventas propias</h2><p class="muted" id="sp_tierLabel">Escalón del equipo</p></div>
+          <div class="card-body"><table class="sp-result-table"><thead><tr><th>Concepto</th><th>Cantidad</th><th>Tarifa</th><th>Subtotal</th></tr></thead><tbody id="sp_ownPaymentRows"></tbody></table></div>
+        </section>
+        <div class="sp-btn-row"><button class="sp-primary" id="sp_export" type="button">Exportar resumen PNG</button><span id="sp_exportStatus" class="sp-small-muted" role="status"></span></div>
+        <p class="sp-small-muted">Simulación orientativa con captura manual. No utiliza los XLS de la aplicación ni sustituye el cálculo oficial de nómina.</p>
+      </div>
+    </div>
+    <button class="sp-help-fab" id="sp_helpBtn" type="button" aria-haspopup="dialog" aria-controls="sp_helpDialog">? &nbsp; Cómo usar</button>
+    <div class="sp-help-overlay" id="sp_helpOverlay" hidden>
+      <div class="sp-help-dialog" id="sp_helpDialog" role="dialog" aria-modal="true" aria-labelledby="sp_helpTitle" tabindex="-1">
+        <button class="sp-help-close" id="sp_helpClose" type="button" aria-label="Cerrar ayuda">×</button>
+        <h2 id="sp_helpTitle">Cómo usar la calculadora de supervisor</h2>
+        <ol>
+          <li><b>Objetivo:</b> escribe la meta de ventas semanal de todo el módulo.</li>
+          <li><b>Equipo:</b> captura las ventas regulares, garantizadas y complementos realizados por ejecutivos. No incluyas las ventas del supervisor en estas cantidades.</li>
+          <li><b>Primera compra:</b> cuenta las ventas con Plan Cero o Plan Dental. Si una tiene ambos, registra solo una.</li>
+          <li><b>Ventas propias:</b> marca «También tuve ventas propias» si aplica. Por defecto se suman al cumplimiento del módulo, pero no a las demás calidades del equipo.</li>
+          <li><b>Resultado:</b> consulta las cuatro calidades, Calidad Total, Alcance Global y el desglose final. El botón de exportación genera un resumen PNG.</li>
+          <li><b>Ajustes opcionales:</b> cambia bono base, objetivos, mínimos del 60%, descuentos, sobrecumplimiento, dinámica o tarifas. No necesitas modificar estos valores para una simulación habitual.</li>
+        </ol>
+        <p class="note"><b>Reglas clave:</b> calidad menor al mínimo = 0; Calidad Total limitada a 100%; Alcance Global sin tope. Bono base × Alcance Global; se multiplica además por cumplimiento únicamente si es inferior al 100%. El bono por dinámica se añade al final y no recibe descuentos.</p>
+        <button class="sp-primary" id="sp_helpDone" type="button">Entendido</button>
+      </div>
+    </div>
+    <section class="sp-print-report" id="sp_print" aria-label="Reporte supervisor para imagen">
+      <div class="sp-print-head"><h2>SIMULACIÓN DE COMISIONES · SUPERVISOR</h2><p>Calculadora de comisiones manual INVEX · WM / Sam's Club · Esquema estimado</p></div>
+      <div class="sp-print-total" id="sp_printTotal">TOTAL ESTIMADO: $0.00</div>
+      <div class="sp-print-columns"><div><h3>INDICADORES Y CALIDADES</h3><table class="sp-result-table"><thead><tr><th>Factor</th><th>Alcance</th><th>Calidad</th></tr></thead><tbody id="sp_printQuality"></tbody></table></div><div><h3>DESGLOSE DE COMISIONES</h3><table class="sp-result-table"><tbody id="sp_printPayments"></tbody></table></div></div>
+      <h3>VENTAS PROPIAS</h3><table class="sp-result-table"><thead><tr><th>Concepto</th><th>Cantidad</th><th>Tarifa</th><th>Total</th></tr></thead><tbody id="sp_printOwn"></tbody></table>
+      <p>Estimación basada en cifras ingresadas manualmente. Los importes pueden variar respecto al cálculo oficial.</p>
+    </section>
+  </section>
+
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
@@ -317,5 +506,219 @@ $('exportImage').addEventListener('click',async()=>{const status=$('exportStatus
 refresh();window.CALC_MANUAL={refresh,tiers};
 })();
 </script>
+
+<script>
+(()=>{
+  'use strict';
+  // Simulador independiente: usa la misma metodología que la calculadora V2.4.8
+  // del proyecto, sin necesitar los datos XLS ni modificar la calculadora de ejecutivos.
+  const $=id=>document.getElementById(id);
+  const money=new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2,maximumFractionDigits:2});
+  const numFmt=new Intl.NumberFormat('es-MX',{maximumFractionDigits:2});
+  const mx=v=>money.format(v);
+  const pc=v=>Number.isFinite(v)?numFmt.format(v)+'%':'—';
+  const round=v=>Math.round((v+Number.EPSILON)*100)/100;
+  const ownIds=['ownReg','ownGuar','ownDental','ownP0','ownApp','ownInc','ownDynamic'];
+  const integerKeys=['goal','teamReg','teamGuar','teamPurchase','teamP0','teamApp',...ownIds];
+  const qualityKeys=['Completion','Purchase','P0','App'];
+  const fieldNodes=Array.from($('supervisorPage').querySelectorAll('input[type="number"]'));
+  const defaults=Object.fromEntries(fieldNodes.map(el=>[el.id,el.defaultValue]));
+  const value=id=>Number($('sp_'+id).value);
+  const checkbox=id=>$('sp_'+id).checked;
+  const msg=id=>$('sp_'+id);
+  const line=(title,amount,cls='')=>`<tr${cls?' class="'+cls+'"':''}><td>${title}</td><td>${amount}</td></tr>`;
+  const qline=(title,actual,qual,cls='')=>`<tr${cls?' class="'+cls+'"':''}><td>${title}</td><td>${pc(actual)}</td><td>${pc(qual)}</td></tr>`;
+  let latest=null;
+  function supervisorCalc(d){
+    const ownEnabled=d.ownEnabled;
+    const teamSales=d.teamReg+d.teamGuar;
+    const ownReg=ownEnabled?d.ownReg:0,ownGuar=ownEnabled?d.ownGuar:0;
+    const ownSales=ownReg+ownGuar;
+    const ownDental=ownEnabled?d.ownDental:0,ownP0=ownEnabled?d.ownP0:0;
+    const ownApp=ownEnabled?d.ownApp:0,ownInc=ownEnabled?d.ownInc:0;
+    const ownDynamic=ownEnabled?d.ownDynamic:0;
+    const completionSales=teamSales+(ownEnabled&&d.includeOwn?ownSales:0);
+    const completion=completionSales/d.goal*100;
+    const teamCompletion=teamSales/d.goal*100;
+    const actual={Completion:completion,Purchase:teamSales?d.teamPurchase/teamSales*100:0,
+      P0:d.teamReg?d.teamP0/d.teamReg*100:0,App:teamSales?d.teamApp/teamSales*100:0};
+    const factor={};
+    for(const key of qualityKeys){
+      const normalized=actual[key]/d['req'+key]*100;
+      const quality=normalized<d['min'+key]?0:normalized;
+      factor[key]=key==='Purchase'||key==='App'?Math.min(100,quality):quality;
+    }
+    const four=qualityKeys.map(k=>factor[k]);
+    const composite=Math.min(100,four.reduce((a,b)=>a+b,0)/4);
+    const global=(four.reduce((a,b)=>a+b,0)+composite)/5;
+    const scaledBase=round(d.baseBonus*global/100*Math.min(1,Math.max(0,completion/100)));
+    const bonuses=[1,2,3].map(i=>({threshold:d['bonusThreshold'+i],amount:d['bonusAmount'+i]}));
+    const earned=bonuses.filter(b=>completion>=b.threshold).sort((a,b)=>b.threshold-a.threshold)[0]||null;
+    const extra=earned?round(earned.amount):0;
+    const bonusGross=round(scaledBase+extra);
+    const moduleP0Reach=d.teamReg?d.teamP0/d.teamReg*100:null;
+    const moduleP0Penalty=d.teamReg>0&&moduleP0Reach<d.moduleP0Threshold?d.moduleP0Penalty:0;
+    const moduleP0Discount=round(bonusGross*moduleP0Penalty/100);
+    const moduleNet=round(bonusGross-moduleP0Discount);
+    const tariff=[1,2,3,4].map(i=>({min:d['tier'+i+'Min'],sale:d['tier'+i+'Sale'],dental:d['tier'+i+'Dental'],app:d['tier'+i+'App'],p0:d['tier'+i+'P0']})).sort((a,b)=>b.min-a.min);
+    const tier=tariff.find(t=>teamCompletion>=t.min)||null;
+    const rate=tier||{sale:0,dental:0,app:0,p0:0,min:null};
+    const parts=[{name:'Ventas propias',count:ownSales,rate:rate.sale},{name:'Plan Dental',count:ownDental,rate:rate.dental},
+      {name:'Activación APP',count:ownApp,rate:rate.app},{name:'Programa Cero',count:ownP0,rate:rate.p0}]
+      .map(p=>({...p,total:round(p.count*p.rate)}));
+    const ownGross=round(parts.reduce((a,p)=>a+p.total,0));
+    const ownP0Compared=d.ownP0UseModule?moduleP0Reach:(ownReg?ownP0/ownReg*100:null);
+    const ownP0HasBase=d.ownP0UseModule?d.teamReg>0:ownReg>0;
+    const ownP0Threshold=d.ownP0UseModule?d.moduleP0Threshold:d.ownP0Threshold;
+    const ownP0Discount=round(ownGross*(ownP0HasBase&&ownP0Compared<ownP0Threshold?d.ownP0Penalty:0)/100);
+    const incRate=ownInc>=4?d.inc4:ownInc===3?d.inc3:ownInc===2?d.inc2:0;
+    const ownIncDiscount=round(ownGross*incRate/100);
+    const ownNet=round(ownGross-ownP0Discount-ownIncDiscount);
+    const dynamicBonus=round(ownDynamic*d.dynamicAmount);
+    const total=round(moduleNet+ownNet+dynamicBonus);
+    return {teamSales,ownSales,completionSales,completion,teamCompletion,actual,factor,composite,global,scaledBase,
+      earned,extra,bonusGross,moduleP0Reach,moduleP0Penalty,moduleP0Discount,moduleNet,tier,parts,ownGross,ownP0Discount,
+      ownIncDiscount,incRate,ownNet,dynamicBonus,ownDynamic,total,ownEnabled};
+  }
+  function readInputs(){
+    const d={ownEnabled:checkbox('ownEnabled'),includeOwn:checkbox('includeOwn'),ownP0UseModule:checkbox('ownP0UseModule')};
+    const errors=[];
+    for(const el of fieldNodes){
+      const key=el.id.slice(3),inactive=ownIds.includes(key)&&!d.ownEnabled;
+      if(inactive){d[key]=0;continue;}
+      const raw=el.value.trim(),n=Number(raw);
+      if(raw===''||!Number.isFinite(n)||n<0||n>1e6){errors.push('Todos los importes y cantidades deben ser números válidos no negativos.');break;}
+      if(integerKeys.includes(key)&&!Number.isInteger(n)){errors.push('Las ventas, complementos, incidencias y objetivo deben ser enteros.');break;}
+      if((key.startsWith('req')||key==='goal')&&n===0){errors.push('El objetivo de ventas y los porcentajes requeridos deben ser mayores que cero.');break;}
+      if((key.endsWith('Penalty')||['inc2','inc3','inc4'].includes(key))&&n>100){errors.push('Los descuentos no pueden superar el 100%.');break;}
+      d[key]=n;
+    }
+    if(!errors.length){
+      const teamSales=d.teamReg+d.teamGuar, ownSales=d.ownReg+d.ownGuar;
+      if(d.teamP0>d.teamReg)errors.push('Programa Cero del equipo no puede superar sus ventas regulares.');
+      if(d.teamPurchase>teamSales)errors.push('Primera compra no puede superar las ventas del equipo.');
+      if(d.teamPurchase<d.teamP0)errors.push('Primera compra debe incluir como mínimo las ventas con Programa Cero.');
+      if(d.teamApp>teamSales)errors.push('APP del equipo no puede superar sus ventas.');
+      if(d.ownP0>d.ownReg)errors.push('Programa Cero propio no puede superar las ventas regulares propias.');
+      if(d.ownDental>ownSales||d.ownApp>ownSales)errors.push('Dental y APP propias no pueden superar el total de ventas propias.');
+      if(d.ownDynamic>ownSales)errors.push('Las ventas con dinámica no pueden superar las ventas propias pagables.');
+    }
+    return {d,errors};
+  }
+  function refresh(){
+    const ownEnabled=checkbox('ownEnabled');
+    $('sp_ownFields').hidden=!ownEnabled;
+    $('sp_ownHint').hidden=ownEnabled;
+    $('sp_ownResultCard').hidden=!ownEnabled;
+    if(checkbox('ownAutoApp')){
+      $('sp_ownApp').value=String((Number($('sp_ownReg').value)||0)+(Number($('sp_ownGuar').value)||0));
+    }
+    $('sp_ownApp').disabled=checkbox('ownAutoApp');
+    const {d,errors}=readInputs(),error=errors[0];
+    $('sp_error').hidden=!error;$('sp_error').textContent=error||'';
+    $('sp_export').disabled=!!error;
+    if(error){
+      latest=null;
+      for(const key of ['total','compliance','global','teamSales','composite'])msg(key).textContent='—';
+      for(const id of ['qualityRows','paymentRows','ownPaymentRows','printQuality','printPayments','printOwn'])msg(id).innerHTML='';
+      $('sp_summaryStatus').textContent='Corrige los valores para calcular el resultado.';
+      $('sp_tierLabel').textContent='Escalón del equipo';
+      return;
+    }
+    const c=supervisorCalc(d);latest=c;
+    msg('total').textContent=mx(c.total);
+    msg('compliance').textContent=pc(c.completion);
+    msg('global').textContent=pc(c.global);
+    msg('teamSales').textContent=numFmt.format(c.teamSales);
+    msg('composite').textContent=pc(c.composite);
+    $('sp_summaryStatus').textContent=`Cumplimiento para tarifas propias: ${pc(c.teamCompletion)}. Bono del módulo: ${mx(c.moduleNet)}${ownEnabled?` · Propias: ${mx(c.ownNet)} · Dinámica: ${mx(c.dynamicBonus)}`:''}.`;
+    const qRows=[...[
+      ['Cumplimiento','Completion'],['Primera compra','Purchase'],['Programa Cero','P0'],['Activaciones APP','App']
+    ].map(([label,key])=>qline(label,c.actual[key],c.factor[key])),
+      qline('CALIDAD TOTAL',null,c.composite,'em'),qline('ALCANCE GLOBAL',null,c.global,'em')].join('');
+    msg('qualityRows').innerHTML=qRows;
+    const pRows=[
+      line('Bono base × alcance global × ajuste por cumplimiento',mx(c.scaledBase)),
+      line(c.earned?`Bono adicional por sobrecumplimiento (${pc(c.earned.threshold)})`:'Bono adicional por sobrecumplimiento',mx(c.extra)),
+      line('Bono antes de penalización',mx(c.bonusGross)),
+      line(`(−) Descuento P0 módulo (${pc(c.moduleP0Penalty)})`,'−'+mx(c.moduleP0Discount),'minus'),
+      line('BONO NETO DEL MÓDULO',mx(c.moduleNet),'em'),
+      line('Ventas propias netas',mx(c.ownNet)),
+      line(`(+) Bono por dinámica (${c.ownDynamic} × ${mx(d.dynamicAmount)})`,'+'+mx(c.dynamicBonus)),
+      line('TOTAL A PAGAR',mx(c.total),'total')
+    ].join('');
+    msg('paymentRows').innerHTML=pRows;
+    const ownRows=c.parts.map(part=>`<tr><td>${part.name}</td><td>${part.count}</td><td>${mx(part.rate)}</td><td>${mx(part.total)}</td></tr>`).join('')+
+      `<tr class="em"><td colspan="3">Subtotal comisiones propias</td><td>${mx(c.ownGross)}</td></tr>`+
+      `<tr class="minus"><td colspan="3">(−) Descuento P0</td><td>−${mx(c.ownP0Discount)}</td></tr>`+
+      `<tr class="minus"><td colspan="3">(−) Incidencias (${pc(c.incRate)})</td><td>−${mx(c.ownIncDiscount)}</td></tr>`+
+      `<tr class="em"><td colspan="3">Ventas propias netas (sin dinámica)</td><td>${mx(c.ownNet)}</td></tr>`;
+    msg('ownPaymentRows').innerHTML=ownRows;
+    $('sp_tierLabel').textContent=c.tier?`Escalón del equipo: desde ${pc(c.tier.min)} de cumplimiento; NO se consideran ventas propias.`:'Sin escalón: el equipo no alcanza el mínimo para el pago de ventas propias.';
+    msg('printTotal').textContent='TOTAL ESTIMADO: '+mx(c.total);
+    msg('printQuality').innerHTML=qRows;
+    msg('printPayments').innerHTML=pRows;
+    msg('printOwn').innerHTML=ownEnabled?ownRows:'<tr><td colspan="4">Sin ventas propias del supervisor</td></tr>';
+  }
+  // Navegación: la pantalla original de colaboradores permanece funcional e independiente.
+  function activate(page){
+    const isSup=page==='supervisor';
+    $('supervisorPage').hidden=!isSup;$('employeePage').hidden=isSup;
+    for(const tab of document.querySelectorAll('.page-tab')){
+      const on=tab.dataset.page===page;
+      tab.classList.toggle('active',on);tab.setAttribute('aria-selected',String(on));tab.tabIndex=on?0:-1;
+    }
+    if(!isSup)closeHelp(false);
+  }
+  document.querySelectorAll('.page-tab').forEach(tab=>tab.addEventListener('click',()=>activate(tab.dataset.page)));
+  $('supervisorPage').addEventListener('input',event=>{if(event.target.matches('input'))refresh();});
+  $('supervisorPage').addEventListener('change',event=>{if(event.target.matches('input'))refresh();});
+  $('sp_reset').addEventListener('click',()=>{
+    if(!confirm('¿Restablecer todos los valores de la simulación de supervisor?'))return;
+    for(const el of fieldNodes)el.value=defaults[el.id];
+    for(const id of ['ownEnabled','ownP0UseModule'])msg(id).checked=false;
+    for(const id of ['ownAutoApp','includeOwn'])msg(id).checked=true;
+    $('sp_options').open=false;
+    refresh();
+  });
+  let previousFocus=null;
+  function openHelp(){previousFocus=document.activeElement;$('sp_helpOverlay').hidden=false;$('sp_helpClose').focus();}
+  function closeHelp(returnFocus=true){$('sp_helpOverlay').hidden=true;if(returnFocus&&previousFocus?.focus)previousFocus.focus();}
+  $('sp_helpBtn').addEventListener('click',openHelp);
+  $('sp_helpClose').addEventListener('click',()=>closeHelp());
+  $('sp_helpDone').addEventListener('click',()=>closeHelp());
+  $('sp_helpOverlay').addEventListener('click',event=>{if(event.target===$('sp_helpOverlay'))closeHelp();});
+  document.addEventListener('keydown',event=>{
+    if($('sp_helpOverlay').hidden)return;
+    if(event.key==='Escape'){closeHelp();return;}
+    if(event.key==='Tab'){
+      const nodes=[...$('sp_helpDialog').querySelectorAll('button:not([disabled]),[href],input:not([disabled])')];
+      const first=nodes[0],last=nodes[nodes.length-1];
+      if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+      else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+    }
+  });
+  $('sp_export').addEventListener('click',async()=>{
+    if(!latest)return;
+    const btn=$('sp_export'),status=$('sp_exportStatus');
+    if(typeof html2canvas!=='function'){status.textContent='Necesitas conexión a internet para cargar el exportador PNG.';return;}
+    btn.disabled=true;status.textContent='Preparando imagen…';
+    try{
+      const canvas=await html2canvas($('sp_print'),{backgroundColor:'#fff',scale:3,useCORS:true,logging:false,width:1120,windowWidth:1280,scrollX:0,scrollY:0,
+        onclone:doc=>{const el=doc.getElementById('sp_print');el.style.position='relative';el.style.left='0';el.style.top='0';}});
+      const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+      if(!blob)throw Error('No fue posible generar la imagen');
+      const url=URL.createObjectURL(blob),a=document.createElement('a');
+      a.href=url;a.download='simulacion_comisiones_supervisor.png';document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),15000);
+      status.textContent=`Imagen generada: ${canvas.width} × ${canvas.height} px`;
+    }catch(e){status.textContent='No se pudo exportar: '+e.message;}
+    finally{btn.disabled=false;}
+  });
+  refresh();
+  window.SUPERVISOR_MANUAL={calculate:supervisorCalc,refresh,activate,getLastResult:()=>latest};
+})();
+</script>
+
 </body>
 </html>
