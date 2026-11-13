@@ -138,6 +138,19 @@
 @media(max-width:860px){.sp-grid{grid-template-columns:1fr}}
 @media(max-width:500px){.page-tab{min-width:0;font-size:12px}.sp-page-head h2{font-size:22px}.sp-result-table{font-size:11px}.sp-help-fab{right:12px;bottom:12px;padding:12px 15px}.sp-kpi strong{font-size:20px}.sp-simple-group .fields{gap:10px}}
 
+  /* Resumen para WhatsApp: botón flotante solo en colaboradores. */
+  .calc-top-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin:-7px 0 13px}
+  .calc-top-actions .secondary{margin-left:0}
+  .sp-head-actions{display:flex;align-items:flex-start;gap:9px;flex-wrap:wrap}
+  .sp-head-actions .secondary{margin-left:0}
+  #employeeHelpOverlay[hidden]{display:none!important}
+  .emp-copy-fab{position:fixed;z-index:50;right:22px;bottom:22px;background:#0b4383;color:#fff;border:0;border-radius:999px;box-shadow:0 8px 23px #103b6e55;padding:14px 20px;font-size:13px;font-weight:850;cursor:pointer}
+  .emp-copy-fab:focus-visible{outline:3px solid #ff923b;outline-offset:3px}
+  .emp-copy-fab:disabled{opacity:.55;cursor:not-allowed}
+  .emp-visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  @media(max-width:500px){.emp-copy-fab{right:12px;bottom:12px;padding:12px 16px}}
+
+
 </style>
 </head>
 <body>
@@ -156,6 +169,7 @@
     <button type="button" class="page-tab" role="tab" aria-selected="false" data-page="supervisor" aria-controls="supervisorPage">Supervisores</button>
   </nav>
   <section id="employeePage" aria-label="Calculadora de colaboradores">
+  <div class="calc-top-actions"><button id="employeeHelpBtn" type="button" class="secondary" aria-haspopup="dialog" aria-controls="employeeHelpDialog">Instrucciones de uso</button></div>
   <div class="scenario-label"><span>01</span><div><h2>Escenario base</h2><p>Resultados originales para establecer el punto de comparación.</p></div></div>
   <div class="workspace scenario-workspace">
     <section class="card" aria-labelledby="base_input-title">
@@ -182,7 +196,14 @@
           </div>
         </div>
         <div class="form-group">
-          <div class="group-title"><span class="bubble">03</span> Incidencias y descuentos</div>
+          <div class="group-title"><span class="bubble">03</span> Bonos por dinámicas</div>
+          <div class="fields">
+            <div class="field"><label for="base_dynamicCount">Ventas con dinámica</label><input id="base_dynamicCount" type="number" min="0" step="1" value="0" inputmode="numeric"><span class="help">Son parte de las ventas ya registradas; no se suman de nuevo.</span></div>
+            <div class="field"><label for="base_dynamicAmount">Bono por venta ($)</label><input id="base_dynamicAmount" type="number" min="0" step="0.01" value="0" inputmode="decimal"><span class="help">Monto adicional por cada venta con dinámica.</span></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="group-title"><span class="bubble">04</span> Incidencias y descuentos</div>
           <div class="fields">
             <div class="field"><label for="base_inc">Número de incidencias</label><input id="base_inc" type="number" min="0" step="1" value="0" inputmode="numeric"><span class="help">1: sin bono · 2: −10% · 3: −20% · 4+: −30%</span></div>
             <div class="field"><label for="base_recover">Folios ya pagados a descontar ($)</label><input id="base_recover" type="number" min="0" step="0.01" value="0" inputmode="decimal"><span class="help">Se descuenta al final; permite saldo negativo</span></div>
@@ -216,6 +237,7 @@
             <tr class="minus"><td colspan="3">Penalización Programa Cero <span id="base_p0DiscountLabel"></span></td><td id="base_p0Discount">−$0.00</td></tr>
             <tr class="minus"><td colspan="3">Penalización incidencias <span id="base_incDiscountLabel"></span></td><td id="base_incDiscount">−$0.00</td></tr>
             <tr class="minus"><td colspan="3">Descuentos de folios anteriores</td><td id="base_priorDiscount">−$0.00</td></tr>
+             <tr><td>Bono por dinámicas</td><td id="base_qDynamic">0</td><td id="base_rDynamic">$0.00</td><td id="base_cDynamic">$0.00</td></tr>
           </tbody>
         </table>
         <div class="alert" id="base_error" role="alert" hidden></div>
@@ -250,7 +272,14 @@
           </div>
         </div>
         <div class="form-group">
-          <div class="group-title"><span class="bubble">03</span> Incidencias y descuentos</div>
+          <div class="group-title"><span class="bubble">03</span> Bonos por dinámicas</div>
+          <div class="fields">
+            <div class="field"><label for="sim_dynamicCount">Ventas con dinámica</label><input id="sim_dynamicCount" type="number" min="0" step="1" value="0" inputmode="numeric"><span class="help">Son parte de las ventas ya registradas; no se suman de nuevo.</span></div>
+            <div class="field"><label for="sim_dynamicAmount">Bono por venta ($)</label><input id="sim_dynamicAmount" type="number" min="0" step="0.01" value="0" inputmode="decimal"><span class="help">Monto adicional por cada venta con dinámica.</span></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="group-title"><span class="bubble">04</span> Incidencias y descuentos</div>
           <div class="fields">
             <div class="field"><label for="sim_inc">Número de incidencias</label><input id="sim_inc" type="number" min="0" step="1" value="0" inputmode="numeric"><span class="help">1: sin bono · 2: −10% · 3: −20% · 4+: −30%</span></div>
             <div class="field"><label for="sim_recover">Folios ya pagados a descontar ($)</label><input id="sim_recover" type="number" min="0" step="0.01" value="0" inputmode="decimal"><span class="help">Se descuenta al final; permite saldo negativo</span></div>
@@ -284,6 +313,7 @@
             <tr class="minus"><td colspan="3">Penalización Programa Cero <span id="sim_p0DiscountLabel"></span></td><td id="sim_p0Discount">−$0.00</td></tr>
             <tr class="minus"><td colspan="3">Penalización incidencias <span id="sim_incDiscountLabel"></span></td><td id="sim_incDiscount">−$0.00</td></tr>
             <tr class="minus"><td colspan="3">Descuentos de folios anteriores</td><td id="sim_priorDiscount">−$0.00</td></tr>
+             <tr><td>Bono por dinámicas</td><td id="sim_qDynamic">0</td><td id="sim_rDynamic">$0.00</td><td id="sim_cDynamic">$0.00</td></tr>
           </tbody>
         </table>
         <div class="alert" id="sim_error" role="alert" hidden></div>
@@ -307,6 +337,24 @@
     </tbody></table></div>
     <p class="footer-note">Los porcentajes se utilizan sin redondear: un 60.9% todavía pertenece al primer escalón, y el siguiente se alcanza únicamente al llegar al 61%. Programa Cero exige al menos 30% de regulares; si no hay ventas regulares, queda exento. Los descuentos porcentuales se suman.</p>
   </section>
+  <div class="sp-help-overlay" id="employeeHelpOverlay" hidden>
+    <div class="sp-help-dialog" id="employeeHelpDialog" role="dialog" aria-modal="true" aria-labelledby="employeeHelpTitle" tabindex="-1">
+      <button class="sp-help-close" id="employeeHelpClose" type="button" aria-label="Cerrar instrucciones">×</button>
+      <h2 id="employeeHelpTitle">Cómo usar la calculadora de colaboradores</h2>
+      <ol>
+        <li><b>Escenario base:</b> captura el objetivo semanal, ventas regulares y garantizadas que sí son pagables.</li>
+        <li><b>Complementos:</b> indica los planes dentales, Programas Cero y activaciones. Si dejas activa la casilla de APP se registra una por cada venta válida.</li>
+        <li><b>Dinámicas:</b> agrega cuántas de esas ventas tuvieron bono y el importe adicional por venta. No vuelvas a sumarlas en el total de ventas. Se añaden al final, sin descuentos porcentuales.</li>
+        <li><b>Incidencias:</b> registra las incidencias de la semana y los folios anteriormente pagados que deban descontarse. Excluye previamente las ventas no comisionables.</li>
+        <li><b>Simulación:</b> modifica las cifras del segundo escenario o usa «Copiar valores del escenario base» para empezar desde los mismos datos.</li>
+        <li><b>Comparar y compartir:</b> revisa la diferencia final; utiliza «Copiar resumen» para pegar el reporte en WhatsApp o exporta la imagen PNG.</li>
+      </ol>
+      <p class="note"><b>Importante:</b> el bono por dinámica es adicional a la comisión normal de esas mismas ventas; no crea ventas extra ni cambia el porcentaje de cumplimiento. El resultado es estimado.</p>
+      <button class="sp-primary" id="employeeHelpDone" type="button">Entendido</button>
+    </div>
+  </div>
+  <button class="emp-copy-fab" id="employeeCopySummary" type="button" aria-describedby="employeeCopyStatus">Copiar resumen</button>
+  <span id="employeeCopyStatus" class="emp-visually-hidden" role="status" aria-live="polite"></span>
   </section>
 
   <section id="supervisorPage" aria-label="Calculadora manual de supervisores" hidden>
@@ -316,7 +364,10 @@
         <h2>Comisión del supervisor</h2>
         <p>Ingresa los totales semanales del equipo. El sistema calculará automáticamente las cuatro calidades, el alcance global y el bono. Las ventas propias son opcionales.</p>
       </div>
-      <button id="sp_reset" class="secondary" type="button">Restablecer datos</button>
+      <div class="sp-head-actions">
+        <button id="sp_helpBtn" class="secondary" type="button" aria-haspopup="dialog" aria-controls="sp_helpDialog">Instrucciones de uso</button>
+        <button id="sp_reset" class="secondary" type="button">Restablecer datos</button>
+      </div>
     </div>
     <div class="sp-grid">
       <div class="sp-input-stack">
@@ -412,10 +463,11 @@
           <div class="card-body"><table class="sp-result-table"><thead><tr><th>Concepto</th><th>Cantidad</th><th>Tarifa</th><th>Subtotal</th></tr></thead><tbody id="sp_ownPaymentRows"></tbody></table></div>
         </section>
         <div class="sp-btn-row"><button class="sp-primary" id="sp_export" type="button">Exportar resumen PNG</button><span id="sp_exportStatus" class="sp-small-muted" role="status"></span></div>
-        <p class="sp-small-muted">Simulación orientativa con captura manual. No sustituye el cálculo oficial de nómina.</p>
+        <p class="sp-small-muted">Simulación orientativa con captura manual. No utiliza los XLS de la aplicación ni sustituye el cálculo oficial de nómina.</p>
       </div>
     </div>
-    <button class="sp-help-fab" id="sp_helpBtn" type="button" aria-haspopup="dialog" aria-controls="sp_helpDialog">? &nbsp; Cómo usar</button>
+    <button class="emp-copy-fab" id="sp_copySummary" type="button" aria-describedby="sp_copyStatus">Copiar resumen</button>
+    <span class="emp-visually-hidden" id="sp_copyStatus" role="status" aria-live="polite"></span>
     <div class="sp-help-overlay" id="sp_helpOverlay" hidden>
       <div class="sp-help-dialog" id="sp_helpDialog" role="dialog" aria-modal="true" aria-labelledby="sp_helpTitle" tabindex="-1">
         <button class="sp-help-close" id="sp_helpClose" type="button" aria-label="Cerrar ayuda">×</button>
@@ -425,7 +477,7 @@
           <li><b>Equipo:</b> captura las ventas regulares, garantizadas y complementos realizados por ejecutivos. No incluyas las ventas del supervisor en estas cantidades.</li>
           <li><b>Primera compra:</b> cuenta las ventas con Plan Cero o Plan Dental. Si una tiene ambos, registra solo una.</li>
           <li><b>Ventas propias:</b> marca «También tuve ventas propias» si aplica. Por defecto se suman al cumplimiento del módulo, pero no a las demás calidades del equipo.</li>
-          <li><b>Resultado:</b> consulta las cuatro calidades, Calidad Total, Alcance Global y el desglose final. El botón de exportación genera un resumen PNG.</li>
+          <li><b>Resultado:</b> consulta las cuatro calidades, Calidad Total, Alcance Global y el desglose final. «Copiar resumen» genera texto para WhatsApp; también puedes exportar un PNG.</li>
           <li><b>Ajustes opcionales:</b> cambia bono base, objetivos, mínimos del 60%, descuentos, sobrecumplimiento, dinámica o tarifas. No necesitas modificar estos valores para una simulación habitual.</li>
         </ol>
         <p class="note"><b>Reglas clave:</b> calidad menor al mínimo = 0; Calidad Total limitada a 100%; Alcance Global sin tope. Bono base × Alcance Global; se multiplica además por cumplimiento únicamente si es inferior al 100%. El bono por dinámica se añade al final y no recibe descuentos.</p>
@@ -455,51 +507,137 @@ const $=id=>document.getElementById(id);
 const pesos=new Intl.NumberFormat('es-MX',{style:'currency',currency:'MXN',minimumFractionDigits:2,maximumFractionDigits:2});
 const fmt=n=>pesos.format(n||0), pct=n=>new Intl.NumberFormat('es-MX',{maximumFractionDigits:2}).format(n)+'%';
 const round=n=>Math.round((n+Number.EPSILON)*100)/100;
-const keys=['goal','regular','guaranteed','dental','p0','app','inc','recover'];
+const keys=['goal','regular','guaranteed','dental','p0','app','inc','recover','dynamicCount','dynamicAmount'];
 const results={};
 function set(p,id,v){$(p+'_'+id).textContent=v;}
 function calculate(p){
 const val=k=>Number($(p+'_'+k).value);
-const reg=val('regular'),guar=val('guaranteed'),goal=val('goal'),dental=val('dental'),p0=val('p0'),inc=val('inc'),recover=val('recover'),sales=reg+guar;
+const reg=val('regular'),guar=val('guaranteed'),goal=val('goal'),dental=val('dental'),p0=val('p0'),inc=val('inc'),recover=val('recover'),dynamicCount=val('dynamicCount'),dynamicAmount=val('dynamicAmount'),sales=reg+guar;
 if($(p+'_autoApp').checked)$(p+'_app').value=Number.isFinite(sales)&&sales>=0?sales:0;
 const app=val('app');
-const data={reg,guar,goal,dental,p0,inc,recover,app};
+const data={reg,guar,goal,dental,p0,inc,recover,app,dynamicCount,dynamicAmount};
 const errors=[];
-for(const [k,v] of Object.entries(data)){if(!Number.isFinite(v)||v<0)errors.push('Todos los campos deben tener valores válidos no negativos.');else if(k!=='recover'&&!Number.isInteger(v))errors.push('Las cantidades y el objetivo deben ser números enteros.');}
+for(const [k,v] of Object.entries(data)){if(!Number.isFinite(v)||v<0)errors.push('Todos los campos deben tener valores válidos no negativos.');else if(!['recover','dynamicAmount'].includes(k)&&!Number.isInteger(v))errors.push('Las cantidades y el objetivo deben ser números enteros.');}
 if(goal<1)errors.push('El objetivo semanal debe ser al menos una venta.');
 if(dental>sales)errors.push('Los planes dentales no pueden superar las ventas válidas.');
 if(app>sales)errors.push('Las APP no pueden superar las ventas válidas.');
 if(p0>reg)errors.push('Programa Cero no puede superar las ventas regulares.');
+ if(dynamicCount>sales)errors.push('Las ventas con dinámica no pueden superar las ventas válidas.');
 set(p,'error',errors[0]||'');$(p+'_error').hidden=!errors.length;
-if(errors.length){set(p,'net','—');set(p,'factor','Datos por corregir');set(p,'penaltyPill','Revisa las cantidades');set(p,'next','Corrige los valores para calcular.');for(const id of ['sales','compliance','p0rate','qSales','qDental','qApp','qP0','rSale','rDental','rApp','rP0','cSale','cDental','cApp','cP0','gross','bonus','p0Discount','incDiscount','priorDiscount'])set(p,id,'—');return null;}
+if(errors.length){set(p,'net','—');set(p,'factor','Datos por corregir');set(p,'penaltyPill','Revisa las cantidades');set(p,'next','Corrige los valores para calcular.');for(const id of ['sales','compliance','p0rate','qSales','qDental','qApp','qP0','rSale','rDental','rApp','rP0','cSale','cDental','cApp','cP0','gross','bonus','p0Discount','incDiscount','priorDiscount','qDynamic','rDynamic','cDynamic'])set(p,id,'—');return null;}
 const compliance=sales/goal*100;
 const tierIndex=tiers.reduce((idx,t,i)=>compliance>=t.min?i:idx,-1),tier=tierIndex<0?null:tiers[tierIndex];
 const rate={sale:tier?.sale||0,dental:tier?.dental||0,app:tier?.app||0,p0:tier?.p0||0};
 const portions={sale:round(sales*rate.sale),dental:round(dental*rate.dental),app:round(app*rate.app),p0:round(p0*rate.p0)};
 const gross=round(Object.values(portions).reduce((a,b)=>a+b,0)),bonus=inc===0?(tier?.bonus||0):0;
 const p0Pct=reg>0?p0/reg*100:null,p0Penalty=reg>0&&p0*100<reg*30?15:0,incPenalty=inc>=4?30:inc===3?20:inc===2?10:0;
-const beforePenalty=round(gross+bonus),discountP0=round(beforePenalty*p0Penalty/100),discountInc=round(beforePenalty*incPenalty/100),net=round(beforePenalty-round(beforePenalty*(p0Penalty+incPenalty)/100)-recover);
+const beforePenalty=round(gross+bonus),discountP0=round(beforePenalty*p0Penalty/100),discountInc=round(beforePenalty*incPenalty/100),dynamicBonus=round(dynamicCount*dynamicAmount),net=round(beforePenalty-round(beforePenalty*(p0Penalty+incPenalty)/100)-recover+dynamicBonus);
 set(p,'net',fmt(net));$(p+'_net').classList.toggle('negative',net<0);
 set(p,'factor',tier?tier.label:'Menos del 50% · sin pago');$(p+'_factor').className='pill '+(tier?'good':'no');
 set(p,'penaltyPill',p0Penalty+incPenalty?'Descuento '+(p0Penalty+incPenalty)+'%':'Sin descuentos porcentuales');$(p+'_penaltyPill').className='pill '+(p0Penalty+incPenalty?'warn':'');
 set(p,'sales',sales);set(p,'compliance',pct(compliance));set(p,'p0rate',p0Pct===null?'Exento':pct(p0Pct));
-for(const [id,value] of Object.entries({qSales:sales,qDental:dental,qApp:app,qP0:p0,rSale:fmt(rate.sale),rDental:fmt(rate.dental),rApp:fmt(rate.app),rP0:fmt(rate.p0),cSale:fmt(portions.sale),cDental:fmt(portions.dental),cApp:fmt(portions.app),cP0:fmt(portions.p0),gross:fmt(gross),bonus:fmt(bonus),p0Discount:'−'+fmt(discountP0),incDiscount:'−'+fmt(discountInc),priorDiscount:'−'+fmt(recover),p0DiscountLabel:'('+p0Penalty+'%)',incDiscountLabel:'('+incPenalty+'%)'}))set(p,id,value);
+for(const [id,value] of Object.entries({qSales:sales,qDental:dental,qApp:app,qP0:p0,rSale:fmt(rate.sale),rDental:fmt(rate.dental),rApp:fmt(rate.app),rP0:fmt(rate.p0),cSale:fmt(portions.sale),cDental:fmt(portions.dental),cApp:fmt(portions.app),cP0:fmt(portions.p0),gross:fmt(gross),bonus:fmt(bonus),p0Discount:'−'+fmt(discountP0),incDiscount:'−'+fmt(discountInc),priorDiscount:'−'+fmt(recover),qDynamic:dynamicCount,rDynamic:fmt(dynamicAmount),cDynamic:fmt(dynamicBonus),p0DiscountLabel:'('+p0Penalty+'%)',incDiscountLabel:'('+incPenalty+'%)'}))set(p,id,value);
 const next=tiers.find(t=>t.min>compliance);
 set(p,'next',next?`Para alcanzar el factor de ${next.min}%, necesitas ${Math.max(0,Math.ceil(next.min*goal/100-1e-10)-sales)} ventas válidas adicionales.`:'Has alcanzado el escalón máximo de pago.');
-return {net,sales,reg,guar,goal,dental,p0,app,inc,recover,compliance,p0Pct,tierIndex,tier,rate,portions,gross,bonus,p0Penalty,incPenalty,discountP0,discountInc};
+return {net,sales,reg,guar,goal,dental,p0,app,inc,recover,dynamicCount,dynamicAmount,dynamicBonus,compliance,p0Pct,tierIndex,tier,rate,portions,gross,bonus,p0Penalty,incPenalty,discountP0,discountInc};
 }
 function highlight(i){document.querySelectorAll('#rates [data-tier]').forEach(el=>{const hit=Number(el.dataset.tier)===i;el.classList.toggle('hit',hit);const old=el.querySelector('.tag-current');if(old)old.remove();if(hit&&el.tagName==='TH'){const tag=document.createElement('span');tag.className='tag-current';tag.textContent='FACTOR BASE';el.appendChild(tag);}});}
-function reportTable(d){const rows=[['Objetivo semanal',d.goal],['Ventas regulares',d.reg],['Ventas garantizadas',d.guar],['Ventas válidas',d.sales],['Cumplimiento',pct(d.compliance)],['Planes dentales',d.dental],['Programas Cero',d.p0],['Activaciones APP',d.app],['Incidencias',d.inc],['Factor',d.tier?d.tier.label:'Sin escalón'],['Ventas · comisión',fmt(d.portions.sale)],['Plan Dental · comisión',fmt(d.portions.dental)],['APP · comisión',fmt(d.portions.app)],['Programa Cero · comisión',fmt(d.portions.p0)],['Comisiones por conceptos',fmt(d.gross)],['Bono calidad',fmt(d.bonus)],['Penalización P0 ('+d.p0Penalty+'%)','−'+fmt(d.discountP0)],['Penalización incidencias ('+d.incPenalty+'%)','−'+fmt(d.discountInc)],['Folios pagados anteriormente','−'+fmt(d.recover)],['COMISIÓN FINAL ESTIMADA',fmt(d.net)]];return '<table>'+rows.map((r,i)=>'<tr'+(i===rows.length-1?' class="emphasis"':'')+'><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('')+'</table>';}
+function reportTable(d){const rows=[['Objetivo semanal',d.goal],['Ventas regulares',d.reg],['Ventas garantizadas',d.guar],['Ventas válidas',d.sales],['Cumplimiento',pct(d.compliance)],['Planes dentales',d.dental],['Programas Cero',d.p0],['Activaciones APP',d.app],['Incidencias',d.inc],['Factor',d.tier?d.tier.label:'Sin escalón'],['Ventas · comisión',fmt(d.portions.sale)],['Plan Dental · comisión',fmt(d.portions.dental)],['APP · comisión',fmt(d.portions.app)],['Programa Cero · comisión',fmt(d.portions.p0)],['Comisiones por conceptos',fmt(d.gross)],['Bono calidad',fmt(d.bonus)],['Penalización P0 ('+d.p0Penalty+'%)','−'+fmt(d.discountP0)],['Penalización incidencias ('+d.incPenalty+'%)','−'+fmt(d.discountInc)],['Folios pagados anteriormente','−'+fmt(d.recover)],['Bono por dinámicas ('+d.dynamicCount+' × '+fmt(d.dynamicAmount)+')','+'+fmt(d.dynamicBonus)],['COMISIÓN FINAL ESTIMADA',fmt(d.net)]];return '<table>'+rows.map((r,i)=>'<tr'+(i===rows.length-1?' class="emphasis"':'')+'><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('')+'</table>';}
 function refresh(){results.base=calculate('base');results.sim=calculate('sim');const a=results.base,b=results.sim;
 $('tierStatus').textContent='Factor base: '+(a?.tier?.label||'sin escalón');highlight(a?.tierIndex??-1);
-if(!a||!b){$('cmpBase').textContent=a?fmt(a.net):'—';$('cmpSim').textContent=b?fmt(b.net):'—';$('cmpDiff').textContent='—';$('cmpPct').textContent='Corrige los datos';$('compareDetails').textContent='Ambos escenarios deben ser válidos para comparar.';$('exportImage').disabled=true;return;}
-$('exportImage').disabled=false;const diff=round(b.net-a.net),percentage=a.net===0?(diff===0?'0%':'No calculable (base $0)'):pct(Math.abs(diff/a.net*100));
+if(!a||!b){$('cmpBase').textContent=a?fmt(a.net):'—';$('cmpSim').textContent=b?fmt(b.net):'—';$('cmpDiff').textContent='—';$('cmpPct').textContent='Corrige los datos';$('compareDetails').textContent='Ambos escenarios deben ser válidos para comparar.';$('exportImage').disabled=true;$('employeeCopySummary').disabled=true;return;}
+$('exportImage').disabled=false;$('employeeCopySummary').disabled=false;const diff=round(b.net-a.net),percentage=a.net===0?(diff===0?'0%':'No calculable (base $0)'):pct(Math.abs(diff/a.net*100));
 $('cmpBase').textContent=fmt(a.net);$('cmpSim').textContent=fmt(b.net);$('cmpDiff').textContent=(diff>0?'+':diff<0?'−':'')+fmt(Math.abs(diff));$('cmpPct').textContent=(diff>0?'Ganancia ':diff<0?'Pérdida ':'Sin cambio · ')+percentage;
 for(const id of ['cmpDiff','cmpPct'])$(id).className=diff>0?'positive':diff<0?'negative-delta':'';
-$('compareDetails').textContent=`Diferencia de ventas: ${b.sales-a.sales>=0?'+':''}${b.sales-a.sales} · Diferencia de cumplimiento: ${(b.compliance-a.compliance)>=0?'+':''}${pct(round(b.compliance-a.compliance))} puntos porcentuales · Diferencia en bono: ${fmt(round(b.bonus-a.bonus))}.`;
+$('compareDetails').textContent=`Diferencia de ventas: ${b.sales-a.sales>=0?'+':''}${b.sales-a.sales} · Diferencia de cumplimiento: ${(b.compliance-a.compliance)>=0?'+':''}${pct(round(b.compliance-a.compliance))} puntos porcentuales · Diferencia en bono de calidad: ${fmt(round(b.bonus-a.bonus))} · Diferencia en dinámicas: ${fmt(round(b.dynamicBonus-a.dynamicBonus))}.`;
 $('reportBase').innerHTML=reportTable(a);$('reportSim').innerHTML=reportTable(b);
-$('reportCompare').innerHTML='<table><tr><td>Comisión escenario base</td><td>'+fmt(a.net)+'</td></tr><tr><td>Comisión simulación</td><td>'+fmt(b.net)+'</td></tr><tr class="emphasis"><td>GANANCIA / PÉRDIDA</td><td class="'+(diff>0?'positive':diff<0?'negative-delta':'')+'">'+(diff>0?'+':diff<0?'−':'')+fmt(Math.abs(diff))+'</td></tr><tr><td>Variación porcentual respecto a la base</td><td>'+percentage+'</td></tr><tr><td>Diferencia en ventas</td><td>'+(b.sales-a.sales)+'</td></tr><tr><td>Diferencia en cumplimiento (puntos porcentuales)</td><td>'+pct(round(b.compliance-a.compliance))+'</td></tr></table>';
+$('reportCompare').innerHTML='<table><tr><td>Comisión escenario base</td><td>'+fmt(a.net)+'</td></tr><tr><td>Comisión simulación</td><td>'+fmt(b.net)+'</td></tr><tr class="emphasis"><td>GANANCIA / PÉRDIDA</td><td class="'+(diff>0?'positive':diff<0?'negative-delta':'')+'">'+(diff>0?'+':diff<0?'−':'')+fmt(Math.abs(diff))+'</td></tr><tr><td>Variación porcentual respecto a la base</td><td>'+percentage+'</td></tr><tr><td>Diferencia en dinámicas</td><td>'+fmt(round(b.dynamicBonus-a.dynamicBonus))+'</td></tr><tr><td>Diferencia en ventas</td><td>'+(b.sales-a.sales)+'</td></tr><tr><td>Diferencia en cumplimiento (puntos porcentuales)</td><td>'+pct(round(b.compliance-a.compliance))+'</td></tr></table>';
 }
+// Resumen compacto, sin iconos, usando los mismos resultados calculados de pantalla.
+function employeeSummary(a,b){
+  const scenario=(heading,d,simulated)=>{
+    const lines=[
+      `*${heading}*`,
+      `Objetivo: ${d.goal} ventas`,
+      `Ventas ${simulated?'simuladas':'realizadas'}: ${d.sales} (${pct(d.compliance)})`,
+      `Regulares: ${d.reg} | Garantizadas: ${d.guar}`,
+      `Plan Dental: ${d.dental} | Programa Cero: ${d.p0} | APP: ${d.app}`
+    ];
+    const deductions=round(d.discountP0+d.discountInc+d.recover);
+    if(d.dynamicCount>0||d.dynamicAmount>0)lines.push(`Dinámicas: ${d.dynamicCount} × ${fmt(d.dynamicAmount)} = +${fmt(d.dynamicBonus)}`);
+    if(d.inc>0||deductions>0)lines.push(`Incidencias: ${d.inc} | Descuentos: ${fmt(deductions)}`);
+    lines.push(`${simulated?'Comisión potencial':'Comisión base'}: *${fmt(d.net)}*`);
+    return lines.join('\n');
+  };
+  const difference=round(b.net-a.net);
+  const sign=difference>0?'+':difference<0?'−':'';
+  const change=a.net===0?(difference===0?'0%':'No calculable (base $0)'):
+    sign+pct(Math.abs(difference/a.net*100));
+  const label=difference>0?'Ganancia potencial':difference<0?'Disminución estimada':'Diferencia';
+  return [
+    '*COMPARATIVO DE COMISIONES*','',
+    scenario('ESCENARIO BASE',a,false),'',
+    scenario('SIMULACIÓN',b,true),'',
+    '*RESULTADO COMPARATIVO*',
+    `${label}: ${sign}${fmt(Math.abs(difference))}`,
+    `Variación: ${change}`,'',
+    '_Simulación orientativa; el pago oficial puede variar._'
+  ].join('\n');
+}
+async function copyEmployeeText(text){
+  if(navigator.clipboard&&typeof navigator.clipboard.writeText==='function'){
+    try{await navigator.clipboard.writeText(text);return;}catch(error){/* Alternativa para archivos locales. */}
+  }
+  const field=document.createElement('textarea');
+  field.value=text;
+  field.setAttribute('readonly','');
+  field.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+  document.body.appendChild(field);
+  field.focus();field.select();field.setSelectionRange(0,field.value.length);
+  let copied=false;
+  try{copied=document.execCommand('copy');}finally{field.remove();}
+  if(!copied)throw new Error('No fue posible acceder al portapapeles.');
+}
+let previousEmployeeFocus=null;
+function closeEmployeeHelp(returnFocus=true){
+  $('employeeHelpOverlay').hidden=true;
+  if(returnFocus&&previousEmployeeFocus?.focus)previousEmployeeFocus.focus();
+}
+$('employeeHelpBtn').addEventListener('click',()=>{
+  previousEmployeeFocus=document.activeElement;
+  $('employeeHelpOverlay').hidden=false;
+  $('employeeHelpClose').focus();
+});
+$('employeeHelpClose').addEventListener('click',()=>closeEmployeeHelp());
+$('employeeHelpDone').addEventListener('click',()=>closeEmployeeHelp());
+$('employeeHelpOverlay').addEventListener('click',event=>{
+  if(event.target===$('employeeHelpOverlay'))closeEmployeeHelp();
+});
+document.addEventListener('keydown',event=>{
+  if($('employeeHelpOverlay').hidden)return;
+  if(event.key==='Escape'){closeEmployeeHelp();return;}
+  if(event.key==='Tab'){
+    const nodes=[...$('employeeHelpDialog').querySelectorAll('button:not([disabled]),[href],input:not([disabled])')];
+    const first=nodes[0],last=nodes[nodes.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  }
+});
+let employeeCopyFeedbackTimer;
+$('employeeCopySummary').addEventListener('click',async()=>{
+  if(!results.base||!results.sim)return;
+  const button=$('employeeCopySummary'),status=$('employeeCopyStatus');
+  clearTimeout(employeeCopyFeedbackTimer);
+  try{
+    await copyEmployeeText(employeeSummary(results.base,results.sim));
+    button.textContent='Resumen copiado';
+    status.textContent='Resumen de comisiones copiado al portapapeles.';
+  }catch(error){
+    button.textContent='No se pudo copiar';
+    status.textContent='No se pudo copiar el resumen. Revisa los permisos del portapapeles.';
+  }
+  employeeCopyFeedbackTimer=setTimeout(()=>{button.textContent='Copiar resumen';},2500);
+});
 for(const p of ['base','sim']){for(const k of keys)$(p+'_'+k).addEventListener('input',refresh);$(p+'_autoApp').addEventListener('change',()=>{$(p+'_app').disabled=$(p+'_autoApp').checked;refresh();});}
 $('copyBase').addEventListener('click',()=>{for(const k of keys)$( 'sim_'+k).value=$('base_'+k).value;$('sim_autoApp').checked=$('base_autoApp').checked;$('sim_app').disabled=$('sim_autoApp').checked;refresh();});
 $('exportImage').addEventListener('click',async()=>{const status=$('exportStatus'),btn=$('exportImage');if(!results.base||!results.sim)return;if(typeof html2canvas!=='function'){status.textContent='No se pudo cargar el motor de exportación. Revisa tu conexión a internet.';return;}btn.disabled=true;status.textContent='Generando PNG en alta resolución…';try{const el=$('exportReport');const canvas=await html2canvas(el,{backgroundColor:'#ffffff',scale:3,useCORS:true,logging:false,width:1280,windowWidth:1400,scrollX:0,scrollY:0,onclone:doc=>{const report=doc.getElementById('exportReport');report.style.position='relative';report.style.left='0';report.style.top='0';report.style.margin='0';}});const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));if(!blob)throw Error('No se pudo generar el PNG');const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='calculadora_comisiones_manual_comparativo.png';document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);status.textContent='Imagen PNG generada correctamente ('+canvas.width+' × '+canvas.height+' px).';}catch(e){status.textContent='Error al exportar: '+e.message;}finally{btn.disabled=false;}});
@@ -553,7 +691,7 @@ refresh();window.CALC_MANUAL={refresh,tiers};
     const global=(four.reduce((a,b)=>a+b,0)+composite)/5;
     const scaledBase=round(d.baseBonus*global/100*Math.min(1,Math.max(0,completion/100)));
     const bonuses=[1,2,3].map(i=>({threshold:d['bonusThreshold'+i],amount:d['bonusAmount'+i]}));
-    const earned=bonuses.filter(b=>completion>=b.threshold).sort((a,b)=>b.threshold-a.threshold)[0]||null;
+    const earned=bonuses.filter(b=>completionSales*100+1e-9>=b.threshold*d.goal).sort((a,b)=>b.threshold-a.threshold)[0]||null;
     const extra=earned?round(earned.amount):0;
     const bonusGross=round(scaledBase+extra);
     const moduleP0Reach=d.teamReg?d.teamP0/d.teamReg*100:null;
@@ -579,6 +717,42 @@ refresh();window.CALC_MANUAL={refresh,tiers};
     return {teamSales,ownSales,completionSales,completion,teamCompletion,actual,factor,composite,global,scaledBase,
       earned,extra,bonusGross,moduleP0Reach,moduleP0Penalty,moduleP0Discount,moduleNet,tier,parts,ownGross,ownP0Discount,
       ownIncDiscount,incRate,ownNet,dynamicBonus,ownDynamic,total,ownEnabled};
+  }
+  // Usa los resultados exactos del cálculo vigente, sin volver a calcular tarifas.
+  function supervisorSummary(d,c){
+    const p=pct=>pc(pct);
+    const rows=[
+      '*RESUMEN DE COMISIONES · SUPERVISOR*','',
+      '*RESULTADOS DEL MÓDULO*',
+      `Objetivo: ${d.goal} ventas | Ventas equipo: ${c.teamSales}`,
+      `Regulares: ${d.teamReg} | Garantizadas: ${d.teamGuar}`,
+      `Primera compra: ${d.teamPurchase} | Programa Cero: ${d.teamP0} | APP: ${d.teamApp}`
+    ];
+    if(c.ownEnabled)rows.push(`Ventas propias: ${c.ownSales} | Incluidas en cumplimiento: ${d.includeOwn?'Sí':'No'}`);
+    rows.push(
+      `Cumplimiento módulo: ${p(c.completion)} | Alcance global: ${p(c.global)}`,
+      `Calidad total: ${p(c.composite)}`,
+      `Calidades: Cumplimiento ${p(c.factor.Completion)} | Primera compra ${p(c.factor.Purchase)}`,
+      `Programa Cero ${p(c.factor.P0)} | Activaciones ${p(c.factor.App)}`,
+      '', '*BONO DEL MÓDULO*',
+      `Bono base ajustado: ${mx(c.scaledBase)}`,
+      `Sobrecumplimiento: ${c.earned?p(c.earned.threshold):'No alcanzado'} | Bono: +${mx(c.extra)}`
+    );
+    if(c.moduleP0Discount>0)rows.push(`Descuento P0 módulo (${p(c.moduleP0Penalty)}): −${mx(c.moduleP0Discount)}`);
+    rows.push(`Bono neto módulo: *${mx(c.moduleNet)}*`);
+    if(c.ownEnabled){
+      rows.push('', '*VENTAS PROPIAS*',
+        `Ventas: ${c.ownSales} (R: ${d.ownReg} | G: ${d.ownGuar})`,
+        `Dental: ${d.ownDental} | P0: ${d.ownP0} | APP: ${d.ownApp}`);
+      if(d.ownInc>0||c.ownP0Discount>0||c.ownIncDiscount>0){
+        rows.push(`Incidencias: ${d.ownInc} | Descuentos: ${mx(round(c.ownP0Discount+c.ownIncDiscount))}`);
+      }
+      rows.push(`Comisión propias neta: ${mx(c.ownNet)}`);
+      if(c.ownDynamic>0||d.dynamicAmount>0)rows.push(`Dinámicas: ${c.ownDynamic} × ${mx(d.dynamicAmount)} = +${mx(c.dynamicBonus)}`);
+    }
+    rows.push('',`*TOTAL ESTIMADO: ${mx(c.total)}*`,'',
+      '_Simulación orientativa; el pago oficial puede variar._');
+    return rows.join('\n');
   }
   function readInputs(){
     const d={ownEnabled:checkbox('ownEnabled'),includeOwn:checkbox('includeOwn'),ownP0UseModule:checkbox('ownP0UseModule')};
@@ -617,6 +791,7 @@ refresh();window.CALC_MANUAL={refresh,tiers};
     const {d,errors}=readInputs(),error=errors[0];
     $('sp_error').hidden=!error;$('sp_error').textContent=error||'';
     $('sp_export').disabled=!!error;
+    $('sp_copySummary').disabled=!!error;
     if(error){
       latest=null;
       for(const key of ['total','compliance','global','teamSales','composite'])msg(key).textContent='—';
@@ -698,6 +873,33 @@ refresh();window.CALC_MANUAL={refresh,tiers};
       else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
     }
   });
+  let supervisorCopyFeedbackTimer;
+  $('sp_copySummary').addEventListener('click',async()=>{
+    if(!latest)return;
+    const button=$('sp_copySummary'),status=$('sp_copyStatus');
+    clearTimeout(supervisorCopyFeedbackTimer);
+    try{
+      await copySupervisorText(supervisorSummary(readInputs().d,latest));
+      button.textContent='Resumen copiado';
+      status.textContent='Resumen de supervisor copiado al portapapeles.';
+    }catch(error){
+      button.textContent='No se pudo copiar';
+      status.textContent='No se pudo acceder al portapapeles. Revisa los permisos.';
+    }
+    supervisorCopyFeedbackTimer=setTimeout(()=>button.textContent='Copiar resumen',2500);
+  });
+  async function copySupervisorText(content){
+    if(navigator.clipboard&&typeof navigator.clipboard.writeText==='function'){
+      try{await navigator.clipboard.writeText(content);return;}catch(e){/* Soporte de archivo local */}
+    }
+    const element=document.createElement('textarea');
+    element.value=content;element.setAttribute('readonly','');
+    element.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';
+    document.body.appendChild(element);element.focus();element.select();element.setSelectionRange(0,element.value.length);
+    let copied=false;
+    try{copied=document.execCommand('copy');}finally{element.remove();}
+    if(!copied)throw Error('No fue posible copiar el texto.');
+  }
   $('sp_export').addEventListener('click',async()=>{
     if(!latest)return;
     const btn=$('sp_export'),status=$('sp_exportStatus');
